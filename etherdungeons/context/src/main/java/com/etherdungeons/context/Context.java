@@ -35,10 +35,7 @@ public class Context {
 
     private <T> T extractResult(List<T> results, Class<T> fieldClass) throws IllegalStateException {
         if (results.size() != 1) {
-            if (results.isEmpty()) {
-                throw new IllegalStateException("no bean found for " + fieldClass.getName());
-            }
-            throw new IllegalStateException("multiple beans found for " + fieldClass.getName() + ": " + results.toString());
+            throw new IllegalStateException(results.size() + " beans found for " + fieldClass.getName() + ": " + results.toString());
         }
         return results.get(0);
     }
