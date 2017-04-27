@@ -20,14 +20,6 @@
     </properties>
     <name>parent</name>
     
-    <repositories>
-        <repository>
-            <id>simsilica</id>
-            <name>simsilica</name>
-            <url>https://dl.bintray.com/simsilica/Sim-tools</url>
-        </repository>
-    </repositories>
-    
     <dependencyManagement>
         <dependencies>
             <dependency>
