@@ -2,9 +2,9 @@ package com.etherdungeons.engine.sandbox;
 
 import com.etherdungeons.context.Context;
 import com.etherdungeons.context.ContextBuilder;
+import com.etherdungeons.engine.abilities.effects.Effect;
 import com.etherdungeons.engine.commands.CommandDistributor;
 import com.etherdungeons.engine.core.Name;
-import com.etherdungeons.engine.gameflow.ActiveTurn;
 import com.etherdungeons.engine.gameflow.Actor;
 import com.etherdungeons.engine.abilities.endturn.EndTurnAbility;
 import com.etherdungeons.engine.abilities.endturn.EndTurnAbilitySystem;
@@ -12,24 +12,42 @@ import com.etherdungeons.engine.abilities.endturn.EndTurnCommand;
 import com.etherdungeons.engine.abilities.endturn.EndTurnCommandHandler;
 import com.etherdungeons.engine.gameflow.GameFlowManager;
 import com.etherdungeons.engine.gameflow.GameState;
-import com.etherdungeons.engine.gameflow.Initiative;
-import com.etherdungeons.engine.stats.Health;
 import com.etherdungeons.engine.abilities.move.MoveAbility;
-import com.etherdungeons.engine.stats.MovePoints;
 import com.etherdungeons.engine.position.Position;
 import com.etherdungeons.engine.position.map.GameMap;
 import com.etherdungeons.engine.abilities.move.MoveAbilitySystem;
 import com.etherdungeons.engine.abilities.move.MoveCommand;
 import com.etherdungeons.engine.abilities.move.MoveCommandHandler;
-import com.etherdungeons.engine.relations.OwnedBy;
-import com.etherdungeons.engine.relations.TeamMemberOf;
-import com.etherdungeons.engine.stats.ActionPoints;
-import com.etherdungeons.engine.stats.CharacterBase;
+import com.etherdungeons.engine.commands.Command;
+import com.etherdungeons.engine.core.OwnedBy;
+import com.etherdungeons.engine.core.Target;
+import com.etherdungeons.engine.gameflow.triggers.StartTurnTrigger;
+import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
+import com.etherdungeons.engine.gameflow.triggers.TriggerSystem;
+import com.etherdungeons.engine.relations.MemberOf;
+import com.etherdungeons.engine.abilities.effects.Heal;
+import com.etherdungeons.engine.abilities.effects.HealSystem;
+import com.etherdungeons.engine.stats.active.ActiveHealth;
+import com.etherdungeons.engine.stats.active.MaxHealthEnforceSystem;
+import com.etherdungeons.engine.stats.base.BaseActionPoints;
+import com.etherdungeons.engine.stats.base.BaseHealth;
+import com.etherdungeons.engine.stats.base.BaseInitiative;
+import com.etherdungeons.engine.stats.base.BaseMovePoints;
+import com.etherdungeons.engine.stats.buffed.BuffedActionPointsUpdateSystem;
+import com.etherdungeons.engine.stats.buffed.BuffedHealthUpdateSystem;
+import com.etherdungeons.engine.stats.buffed.BuffedInitiativeUpdateSystem;
+import com.etherdungeons.engine.stats.buffed.BuffedMovePointsUpdateSystem;
+import com.etherdungeons.entitysystem.EntityComponent;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
 import com.etherdungeons.entitysystem.EntityDataImpl;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,13 +67,20 @@ public class Main {
         ContextBuilder contextBuilder = new ContextBuilder();
         contextBuilder.add(EntityDataImpl.class.getConstructor());
         contextBuilder.add(GameMap.class.getConstructor());
-        contextBuilder.add(CommandDistributor.class.getConstructor(EntityData.class, List.class, Collection.class));
+        contextBuilder.add(CommandDistributor.class.getConstructor(Collection.class));
         contextBuilder.add(MoveCommandHandler.class.getConstructor(EntityData.class));
         contextBuilder.add(EndTurnCommandHandler.class.getConstructor(EntityData.class));
         contextBuilder.add(GameFlowManager.class.getConstructor(EntityData.class));
         
+        contextBuilder.add(TriggerSystem.class.getConstructor(EntityData.class));
         contextBuilder.add(MoveAbilitySystem.class.getConstructor(EntityData.class, GameMap.class));
         contextBuilder.add(EndTurnAbilitySystem.class.getConstructor(EntityData.class, GameFlowManager.class));
+        contextBuilder.add(HealSystem.class.getConstructor(EntityData.class));
+        contextBuilder.add(BuffedHealthUpdateSystem.class.getConstructor(EntityData.class));
+        contextBuilder.add(BuffedInitiativeUpdateSystem.class.getConstructor(EntityData.class));
+        contextBuilder.add(BuffedMovePointsUpdateSystem.class.getConstructor(EntityData.class));
+        contextBuilder.add(BuffedActionPointsUpdateSystem.class.getConstructor(EntityData.class));
+        contextBuilder.add(MaxHealthEnforceSystem.class.getConstructor(EntityData.class));
         Context context = contextBuilder.build();
         
         context.getBean(GameMap.class).setSize(10, 10);
@@ -75,56 +100,78 @@ public class Main {
         data.set(amara, new Name("Amara"));
         data.set(amara, new Actor());
         data.set(amara, new Position(2, 4));
-        
-        EntityId amaraBase = data.createEntity();
-        data.set(amaraBase, new Name("AmaraBase"));
-        data.set(amaraBase, new OwnedBy(amara));
-        data.set(amaraBase, new CharacterBase());
-        data.set(amaraBase, new Initiative(10));
-        data.set(amaraBase, new Health(17));
-        data.set(amaraBase, new ActionPoints(7));
-        data.set(amaraBase, new MovePoints(7));
-        data.set(amaraBase, new TeamMemberOf(teamA));
+        data.set(amara, new MemberOf(teamA));
+        data.set(amara, new BaseInitiative(10));
+        data.set(amara, new BaseHealth(17));
+        data.set(amara, new BaseActionPoints(7));
+        data.set(amara, new BaseMovePoints(4));
         
         EntityId amaraMove = data.createEntity();
-        data.set(amaraMove, new Name("amaraMove"));
+        data.set(amaraMove, new Name("AmaraMove"));
         data.set(amaraMove, new OwnedBy(amara));
         data.set(amaraMove, new MoveAbility());
         
         EntityId amaraEndTurn = data.createEntity();
-        data.set(amaraEndTurn, new Name("amaraEndTurn"));
+        data.set(amaraEndTurn, new Name("AmaraEndTurn"));
         data.set(amaraEndTurn, new OwnedBy(amara));
         data.set(amaraEndTurn, new EndTurnAbility());
+        
+        EntityId amaraRegeneration = data.createEntity();
+        data.set(amaraRegeneration, new Name("AmaraRegeneration"));
+        data.set(amaraRegeneration, new StartTurnTrigger());
+        
+        EntityId healEffect = data.createEntity();
+        data.set(healEffect, new Name("HealEffect"));
+        data.set(healEffect, new OwnedBy(amaraRegeneration));
+        data.set(healEffect, new Target(amara));
+        data.set(healEffect, new Heal(2));
+        data.set(healEffect, new Effect());
         
         EntityId robert = data.createEntity();
         data.set(robert, new Name("Robert"));
         data.set(robert, new Actor());
         data.set(robert, new Position(5, 7));
+        data.set(robert, new BaseInitiative(9));
+        data.set(robert, new BaseHealth(17));
+        data.set(robert, new BaseActionPoints(7));
+        data.set(robert, new BaseMovePoints(7));
+        data.set(robert, new MemberOf(teamB));
         
-        EntityId robertBase = data.createEntity();
-        data.set(robertBase, new Name("RobertBase"));
-        data.set(robertBase, new OwnedBy(robert));
-        data.set(robertBase, new CharacterBase());
-        data.set(robertBase, new Initiative(9));
-        data.set(robertBase, new Health(17));
-        data.set(robertBase, new ActionPoints(7));
-        data.set(robertBase, new MovePoints(7));
-        data.set(robertBase, new TeamMemberOf(teamB));
-        
+        update(context);
+        logState(data, log);
         context.getBean(GameFlowManager.class).startGame();
+        data.set(amara, new ActiveHealth(16));
+        handleCommand(context, new MoveCommand(new Position(4, 3)));
+        handleCommand(context, new EndTurnCommand());
         
-        log.info("{}", data.get(amara, Position.class));
-        log.info("{}", data.get(amara, MovePoints.class));
-        
-        context.getBean(CommandDistributor.class).handle(new MoveCommand(new Position(4, 3)));
+        logState(data, log);
+    }
 
-//        context.getBeans(Runnable.class).stream().forEach(Runnable::run);
-        log.info("{}", data.get(amara, Position.class));
-        log.info("{}", data.get(amara, MovePoints.class));
+    private static void logState(EntityData data, Logger log) {
+        Map<EntityId, List<String>> map = new HashMap<>();
+        for (Class<? extends EntityComponent> componentClass : data.registeredComponentClasses()) {
+            for (EntityId entity : data.entities(componentClass)) {
+                map.computeIfAbsent(entity, e -> new ArrayList<>()).add(data.get(entity, componentClass).toString());
+            }
+        }
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        log.info("state:\n{}", gson.toJson(map));
+    }
+
+    private static void handleCommand(Context context, Command command) {
+        context.getBean(CommandDistributor.class).handle(command);
+        update(context);
+    }
+
+    private static void update(Context context) {
+        List<Runnable> runnables = context.getBeans(Runnable.class);
+        EntityData data = context.getBean(EntityData.class);
         
-        context.getBean(CommandDistributor.class).handle(new EndTurnCommand());
-        
-        log.info("{}", data.get(data.entity(ActiveTurn.class), Name.class).getName());
+        do {
+            for (Runnable runnable : runnables) {
+                runnable.run();
+            }
+        } while(!data.entities(TriggerRequest.class).isEmpty());
     }
 
 }

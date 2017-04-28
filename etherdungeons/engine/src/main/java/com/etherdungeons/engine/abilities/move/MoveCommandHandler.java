@@ -2,9 +2,11 @@ package com.etherdungeons.engine.abilities.move;
 
 import com.etherdungeons.engine.commands.CommandHandler;
 import com.etherdungeons.engine.gameflow.ActiveTurn;
-import com.etherdungeons.engine.gameflow.Triggered;
+import com.etherdungeons.engine.gameflow.triggers.Triggered;
 import com.etherdungeons.engine.position.Position;
-import com.etherdungeons.engine.relations.OwnedBy;
+import com.etherdungeons.engine.core.OwnedBy;
+import com.etherdungeons.engine.core.Target;
+import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
 
@@ -29,7 +31,8 @@ public class MoveCommandHandler implements CommandHandler<MoveCommand> {
     
     private void createMoveCommandTriggeredEntity(EntityId ability, Position to) {
         EntityId entity = data.createEntity();
-        data.set(entity, new Triggered(ability));
+        data.set(entity, new TriggerRequest());
+        data.set(entity, new Target(ability));
         data.set(entity, to);
     }
 

@@ -15,13 +15,13 @@ public final class EntityId implements Comparable<EntityId> {
     public boolean equals(Object obj) {
         return obj instanceof EntityId && equals((EntityId)obj);
     }
+    public boolean equals(EntityId obj) {
+        return id == obj.id;
+    }
 
     @Override
     public int hashCode() {
         return (int) id;
-    }
-    public boolean equals(EntityId obj) {
-        return id == obj.id;
     }
 
     public long longValue() {
@@ -30,7 +30,7 @@ public final class EntityId implements Comparable<EntityId> {
 
     @Override
     public String toString() {
-        return "#" + id;
+        return getClass().getSimpleName() + "{id=" + id + '}';
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.stats;
+package com.etherdungeons.engine.stats.additive;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -6,10 +6,10 @@ import com.etherdungeons.entitysystem.EntityComponent;
  *
  * @author Philipp
  */
-public class MovePoints implements EntityComponent {
+public class AdditiveMovePoints implements EntityComponent {
     private final int mp;
 
-    public MovePoints(int mp) {
+    public AdditiveMovePoints(int mp) {
         this.mp = mp;
     }
 

@@ -7,11 +7,11 @@ import com.etherdungeons.entitysystem.EntityId;
  *
  * @author Philipp
  */
-public class TeamMemberOf implements EntityComponent {
+public class MemberOf implements EntityComponent {
 
     private final EntityId team;
 
-    public TeamMemberOf(EntityId team) {
+    public MemberOf(EntityId team) {
         this.team = team;
     }
 
@@ -21,6 +21,6 @@ public class TeamMemberOf implements EntityComponent {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + "team=" + team + '}';
+        return getClass().getSimpleName() + "{team=" + team + '}';
     }
 }

@@ -18,10 +18,6 @@
         </dependency>
         <dependency>
             <groupId>com.etherdungeons</groupId>
-            <artifactId>entitysystem-extension</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.etherdungeons</groupId>
             <artifactId>entitysystem</artifactId>
         </dependency>
         

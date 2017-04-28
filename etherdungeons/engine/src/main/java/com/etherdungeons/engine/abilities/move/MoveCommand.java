@@ -1,13 +1,13 @@
 package com.etherdungeons.engine.abilities.move;
 
-import com.etherdungeons.engine.commands.PlayerCommand;
 import com.etherdungeons.engine.position.Position;
+import com.etherdungeons.engine.commands.Command;
 
 /**
  *
  * @author Philipp
  */
-public class MoveCommand implements PlayerCommand {
+public class MoveCommand implements Command {
 
     private final Position target;
 

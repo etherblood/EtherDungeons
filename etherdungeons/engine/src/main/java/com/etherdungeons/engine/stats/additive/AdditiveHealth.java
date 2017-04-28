@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.stats;
+package com.etherdungeons.engine.stats.additive;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -6,10 +6,10 @@ import com.etherdungeons.entitysystem.EntityComponent;
  *
  * @author Philipp
  */
-public class Health implements EntityComponent {
+public class AdditiveHealth implements EntityComponent {
     private final int health;
 
-    public Health(int health) {
+    public AdditiveHealth(int health) {
         this.health = health;
     }
 

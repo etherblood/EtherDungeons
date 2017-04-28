@@ -1,21 +1,21 @@
 package com.etherdungeons.engine.gameflow;
 
+import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
+import com.etherdungeons.engine.gameflow.triggers.StartTurnTrigger;
 import com.etherdungeons.engine.core.Name;
-import com.etherdungeons.engine.stats.Health;
-import com.etherdungeons.engine.position.Position;
-import com.etherdungeons.engine.abilities.move.MoveAbility;
-import com.etherdungeons.engine.relations.OwnedBy;
-import com.etherdungeons.engine.relations.TeamMemberOf;
-import com.etherdungeons.engine.stats.ActionPoints;
-import com.etherdungeons.engine.stats.CharacterBase;
-import com.etherdungeons.engine.stats.MovePoints;
-import com.etherdungeons.es.extension.ZayesUtil;
+import com.etherdungeons.engine.core.OwnedBy;
+import com.etherdungeons.engine.stats.active.ActiveActionPoints;
+import com.etherdungeons.engine.stats.active.ActiveHealth;
+import com.etherdungeons.engine.stats.active.ActiveMovePoints;
+import com.etherdungeons.engine.stats.buffed.BuffedActionPoints;
+import com.etherdungeons.engine.stats.buffed.BuffedHealth;
+import com.etherdungeons.engine.stats.buffed.BuffedInitiative;
+import com.etherdungeons.engine.stats.buffed.BuffedMovePoints;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,18 +30,15 @@ public class GameFlowManager {
 
     public GameFlowManager(EntityData data) {
         this.data = data;
-        Comparator<EntityId> comparator = Comparator.comparingInt(entity -> data.get(entity, Initiative.class).getInit());
+        Comparator<EntityId> comparator = Comparator.comparingInt(entity -> data.get(entity, BuffedInitiative.class).getInit());
         comparator = comparator.reversed();
-        comparator = comparator.thenComparingInt(entity -> data.get(entity, Health.class).getHealth());//low health characters have higher priority
-        comparator = comparator.thenComparingInt(entity -> data.get(entity, Position.class).getX());
-        comparator = comparator.thenComparingInt(entity -> data.get(entity, Position.class).getY());
+        comparator = comparator.thenComparing(e -> e);
         this.turnOrderComparator = comparator;
     }
 
     public void startGame() {
-        for (EntityId base : data.entities(CharacterBase.class, OwnedBy.class)) {
-            EntityId owner = data.get(base, OwnedBy.class).getOwner();
-            ZayesUtil.copyExistingComponents(data, base, owner, Health.class, Initiative.class, MoveAbility.class, TeamMemberOf.class);
+        for (EntityId entity : data.entities(BuffedHealth.class)) {
+            data.set(entity, new ActiveHealth(data.get(entity, BuffedHealth.class).getHealth()));
         }
         log().info("started game");
         startRound();
@@ -55,8 +52,9 @@ public class GameFlowManager {
             round += previousRoundComp.getRound();
         }
         data.set(state, new CurrentRound(round));
-        List<EntityId> actors = new ArrayList<>(data.entities(Actor.class, Initiative.class));
-        Collections.sort(actors, turnOrderComparator);
+        List<EntityId> actors = data.streamEntities(Actor.class, BuffedInitiative.class)
+                .sorted(turnOrderComparator)
+                .collect(Collectors.toList());
 
         EntityId a = actors.get(0);
         for (int i = 1; i < actors.size(); i++) {
@@ -76,9 +74,24 @@ public class GameFlowManager {
     private void startTurn(EntityId actor) {
         data.set(actor, new ActiveTurn());
 
-        EntityId baseEntity = data.streamEntities(OwnedBy.class, CharacterBase.class).filter(e -> data.get(e, OwnedBy.class).getOwner() == actor).findAny().get();
-        ZayesUtil.copyExistingComponents(data, baseEntity, actor, ActionPoints.class, MovePoints.class);
+        BuffedActionPoints ap = data.get(actor, BuffedActionPoints.class);
+        if(ap != null) {
+            data.set(actor, new ActiveActionPoints(ap.getAp()));
+        } else {
+            data.remove(actor, ActiveActionPoints.class);
+        }
+
+        BuffedMovePoints mp = data.get(actor, BuffedMovePoints.class);
+        if(mp != null) {
+            data.set(actor, new ActiveMovePoints(mp.getMp()));
+        } else {
+            data.remove(actor, ActiveMovePoints.class);
+        }
+        
         log().info("started turn {}", data.get(actor, Name.class).getName());
+        for (EntityId entity : data.entities(StartTurnTrigger.class)) {
+            data.set(entity, new TriggerRequest());
+        }
     }
 
     public void endTurn() {

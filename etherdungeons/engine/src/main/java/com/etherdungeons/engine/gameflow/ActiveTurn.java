@@ -8,4 +8,9 @@ import com.etherdungeons.entitysystem.EntityComponent;
  */
 public class ActiveTurn implements EntityComponent {
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{}";
+    }
+
 }

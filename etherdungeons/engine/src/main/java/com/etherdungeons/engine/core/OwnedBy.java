@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.relations;
+package com.etherdungeons.engine.core;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 import com.etherdungeons.entitysystem.EntityId;
@@ -20,6 +20,6 @@ public class OwnedBy implements EntityComponent {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + "owner=" + owner + '}';
+        return getClass().getSimpleName() + "{owner=" + owner + '}';
     }
 }

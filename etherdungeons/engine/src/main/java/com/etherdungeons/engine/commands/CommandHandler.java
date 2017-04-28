@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
  *
  * @author Philipp
  */
-public interface CommandHandler<T extends PlayerCommand> {
+public interface CommandHandler<T extends Command> {
 
     void handle(T command);
 

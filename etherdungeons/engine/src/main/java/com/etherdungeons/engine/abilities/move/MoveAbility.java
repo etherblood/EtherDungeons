@@ -8,4 +8,9 @@ import com.etherdungeons.entitysystem.EntityComponent;
  */
 public class MoveAbility implements EntityComponent {
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{}";
+    }
+
 }

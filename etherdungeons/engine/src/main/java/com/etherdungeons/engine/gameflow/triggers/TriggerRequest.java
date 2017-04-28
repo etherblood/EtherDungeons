@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.abilities.endturn;
+package com.etherdungeons.engine.gameflow.triggers;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -6,11 +6,10 @@ import com.etherdungeons.entitysystem.EntityComponent;
  *
  * @author Philipp
  */
-public class EndTurnAbility implements EntityComponent {
+public class TriggerRequest implements EntityComponent {
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{}";
     }
-
 }

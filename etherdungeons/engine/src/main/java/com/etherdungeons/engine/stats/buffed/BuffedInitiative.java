@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.gameflow;
+package com.etherdungeons.engine.stats.buffed;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -6,10 +6,10 @@ import com.etherdungeons.entitysystem.EntityComponent;
  *
  * @author Philipp
  */
-public class Initiative implements EntityComponent {
+public class BuffedInitiative implements EntityComponent {
     private final int init;
 
-    public Initiative(int init) {
+    public BuffedInitiative(int init) {
         this.init = init;
     }
 
