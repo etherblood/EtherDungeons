@@ -20,8 +20,8 @@ public class TriggerSystem implements Runnable {
             data.clearEntity(entity);
         }
         for (EntityId entity : data.entities(TriggerRequest.class)) {
-            data.remove(entity, TriggerRequest.class);
-            data.set(entity, new Triggered());
+            TriggerRequest removed = data.remove(entity, TriggerRequest.class);
+            data.set(entity, new Triggered(removed.getTrigger()));
         }
     }
     

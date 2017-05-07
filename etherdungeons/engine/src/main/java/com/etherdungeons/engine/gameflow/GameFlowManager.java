@@ -3,7 +3,6 @@ package com.etherdungeons.engine.gameflow;
 import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
 import com.etherdungeons.engine.gameflow.triggers.StartTurnTrigger;
 import com.etherdungeons.engine.core.Name;
-import com.etherdungeons.engine.core.OwnedBy;
 import com.etherdungeons.engine.stats.active.ActiveActionPoints;
 import com.etherdungeons.engine.stats.active.ActiveHealth;
 import com.etherdungeons.engine.stats.active.ActiveMovePoints;
@@ -39,6 +38,7 @@ public class GameFlowManager {
     public void startGame() {
         for (EntityId entity : data.entities(BuffedHealth.class)) {
             data.set(entity, new ActiveHealth(data.get(entity, BuffedHealth.class).getHealth()));
+            resetApAndMp(entity);
         }
         log().info("started game");
         startRound();
@@ -68,12 +68,34 @@ public class GameFlowManager {
     }
 
     public void endRound() {
+        for (EntityId entity : data.entities(NextActor.class)) {
+            data.remove(entity, NextActor.class);
+        }
         startRound();
     }
 
     private void startTurn(EntityId actor) {
         data.set(actor, new ActiveTurn());
+        
+        log().info("started turn {}", data.get(actor, Name.class).getName());
+        for (EntityId trigger : data.entities(StartTurnTrigger.class)) {
+            data.set(data.createEntity(), new TriggerRequest(trigger));
+        }
+    }
 
+    public void endTurn() {
+        EntityId current = data.entity(ActiveTurn.class);
+        resetApAndMp(current);
+        data.remove(current, ActiveTurn.class);
+        NextActor nextComp = data.get(current, NextActor.class);
+        if (nextComp == null) {
+            endRound();
+        } else {
+            startTurn(nextComp.getNext());
+        }
+    }
+
+    private void resetApAndMp(EntityId actor) {
         BuffedActionPoints ap = data.get(actor, BuffedActionPoints.class);
         if(ap != null) {
             data.set(actor, new ActiveActionPoints(ap.getAp()));
@@ -86,22 +108,6 @@ public class GameFlowManager {
             data.set(actor, new ActiveMovePoints(mp.getMp()));
         } else {
             data.remove(actor, ActiveMovePoints.class);
-        }
-        
-        log().info("started turn {}", data.get(actor, Name.class).getName());
-        for (EntityId entity : data.entities(StartTurnTrigger.class)) {
-            data.set(entity, new TriggerRequest());
-        }
-    }
-
-    public void endTurn() {
-        EntityId current = data.entity(ActiveTurn.class);
-        data.remove(current, ActiveTurn.class);
-        NextActor nextComp = data.get(current, NextActor.class);
-        if (nextComp == null) {
-            endRound();
-        } else {
-            startTurn(nextComp.getNext());
         }
     }
 

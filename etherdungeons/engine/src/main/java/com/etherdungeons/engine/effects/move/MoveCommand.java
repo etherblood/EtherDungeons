@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.abilities.move;
+package com.etherdungeons.engine.effects.move;
 
 import com.etherdungeons.engine.position.Position;
 import com.etherdungeons.engine.commands.Command;

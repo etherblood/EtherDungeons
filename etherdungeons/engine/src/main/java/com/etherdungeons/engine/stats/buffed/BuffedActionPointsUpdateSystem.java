@@ -1,40 +1,46 @@
 package com.etherdungeons.engine.stats.buffed;
 
-import com.etherdungeons.engine.core.Target;
 import com.etherdungeons.engine.stats.additive.AdditiveActionPoints;
 import com.etherdungeons.engine.stats.base.BaseActionPoints;
 import com.etherdungeons.entitysystem.EntityData;
-import com.etherdungeons.entitysystem.EntityId;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
  * @author Philipp
  */
-public class BuffedActionPointsUpdateSystem implements Runnable {
-
-    private final EntityData data;
+public class BuffedActionPointsUpdateSystem extends AbstractBuffedStatUpdateSystem<BaseActionPoints, AdditiveActionPoints, BuffedActionPoints>{
 
     public BuffedActionPointsUpdateSystem(EntityData data) {
-        this.data = data;
+        super(data);
     }
 
     @Override
-    public void run() {
-        for (EntityId entity : data.entities(BuffedActionPoints.class)) {
-            data.remove(entity, BuffedActionPoints.class);
-        }
-        Map<EntityId, Integer> additionalActionPoints = new HashMap<>();
-        for (EntityId entity : data.entities(AdditiveActionPoints.class, Target.class)) {
-            int health = additionalActionPoints.getOrDefault(entity, 0);
-            health += data.get(entity, AdditiveActionPoints.class).getAp();
-            additionalActionPoints.put(entity, health);
-        }
-        for (EntityId entity : data.entities(BaseActionPoints.class)) {
-            int health = additionalActionPoints.getOrDefault(entity, 0);
-            health += data.get(entity, BaseActionPoints.class).getAp();
-            data.set(entity, new BuffedActionPoints(health));
-        }
+    protected Class<BaseActionPoints> getBaseStatClass() {
+        return BaseActionPoints.class;
+    }
+
+    @Override
+    protected Class<AdditiveActionPoints> getAdditiveStatClass() {
+        return AdditiveActionPoints.class;
+    }
+
+    @Override
+    protected Class<BuffedActionPoints> getBuffedStatClass() {
+        return BuffedActionPoints.class;
+    }
+
+    @Override
+    protected int getBaseStatValue(BaseActionPoints baseStat) {
+        return baseStat.getAp();
+    }
+
+    @Override
+    protected int getAdditiveStatValue(AdditiveActionPoints additiveStat) {
+        return additiveStat.getAp();
+    }
+
+    @Override
+    protected BuffedActionPoints createBuffedStat(int buffedStatValue) {
+        return new BuffedActionPoints(buffedStatValue);
     }
 }

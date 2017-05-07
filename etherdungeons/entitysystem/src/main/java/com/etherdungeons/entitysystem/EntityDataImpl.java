@@ -38,18 +38,20 @@ public class EntityDataImpl implements EntityData, EntityDataReadonly {
     }
 
     @Override
-    public <T extends EntityComponent> boolean has(EntityId entity, Class<T> componentClass) {
+    public boolean has(EntityId entity, Class<? extends EntityComponent> componentClass) {
         return getComponentMap(componentClass).containsKey(entity);
     }
 
     @Override
-    public void set(EntityId entity, EntityComponent component) {
-        getComponentMap(component.getClass()).put(entity, component);
+    @SuppressWarnings("unchecked")
+    public <T extends EntityComponent> T set(EntityId entity, T component) {
+        return (T) getComponentMap(component.getClass()).put(entity, component);
     }
 
     @Override
-    public void remove(EntityId entity, Class<? extends EntityComponent> componentClass) {
-        getComponentMap(componentClass).remove(entity);
+    @SuppressWarnings("unchecked")
+    public <T extends EntityComponent> T remove(EntityId entity, Class<T> componentClass) {
+        return (T) getComponentMap(componentClass).remove(entity);
     }
 
     @Override

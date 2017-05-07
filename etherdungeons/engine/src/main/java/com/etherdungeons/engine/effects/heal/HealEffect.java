@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.abilities.effects;
+package com.etherdungeons.engine.effects.heal;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -6,10 +6,10 @@ import com.etherdungeons.entitysystem.EntityComponent;
  *
  * @author Philipp
  */
-public class Heal implements EntityComponent {
+public class HealEffect implements EntityComponent {
     private final int heal;
 
-    public Heal(int heal) {
+    public HealEffect(int heal) {
         this.heal = heal;
     }
 

@@ -1,40 +1,46 @@
 package com.etherdungeons.engine.stats.buffed;
 
-import com.etherdungeons.engine.core.Target;
 import com.etherdungeons.engine.stats.additive.AdditiveInitiative;
 import com.etherdungeons.engine.stats.base.BaseInitiative;
 import com.etherdungeons.entitysystem.EntityData;
-import com.etherdungeons.entitysystem.EntityId;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
  * @author Philipp
  */
-public class BuffedInitiativeUpdateSystem implements Runnable {
-
-    private final EntityData data;
+public class BuffedInitiativeUpdateSystem extends AbstractBuffedStatUpdateSystem<BaseInitiative, AdditiveInitiative, BuffedInitiative>{
 
     public BuffedInitiativeUpdateSystem(EntityData data) {
-        this.data = data;
+        super(data);
     }
 
     @Override
-    public void run() {
-        for (EntityId entity : data.entities(BuffedInitiative.class)) {
-            data.remove(entity, BuffedInitiative.class);
-        }
-        Map<EntityId, Integer> additionalInitiative = new HashMap<>();
-        for (EntityId entity : data.entities(AdditiveInitiative.class, Target.class)) {
-            int health = additionalInitiative.getOrDefault(entity, 0);
-            health += data.get(entity, AdditiveInitiative.class).getInit();
-            additionalInitiative.put(entity, health);
-        }
-        for (EntityId entity : data.entities(BaseInitiative.class)) {
-            int health = additionalInitiative.getOrDefault(entity, 0);
-            health += data.get(entity, BaseInitiative.class).getInit();
-            data.set(entity, new BuffedInitiative(health));
-        }
+    protected Class<BaseInitiative> getBaseStatClass() {
+        return BaseInitiative.class;
+    }
+
+    @Override
+    protected Class<AdditiveInitiative> getAdditiveStatClass() {
+        return AdditiveInitiative.class;
+    }
+
+    @Override
+    protected Class<BuffedInitiative> getBuffedStatClass() {
+        return BuffedInitiative.class;
+    }
+
+    @Override
+    protected int getBaseStatValue(BaseInitiative baseStat) {
+        return baseStat.getInit();
+    }
+
+    @Override
+    protected int getAdditiveStatValue(AdditiveInitiative additiveStat) {
+        return additiveStat.getInit();
+    }
+
+    @Override
+    protected BuffedInitiative createBuffedStat(int buffedStatValue) {
+        return new BuffedInitiative(buffedStatValue);
     }
 }

@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.abilities.move;
+package com.etherdungeons.engine.effects.move;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -6,7 +6,7 @@ import com.etherdungeons.entitysystem.EntityComponent;
  *
  * @author Philipp
  */
-public class MoveAbility implements EntityComponent {
+public class MoveTrigger implements EntityComponent {
 
     @Override
     public String toString() {

@@ -26,8 +26,17 @@ public interface EntityDataReadonly {
         return streamEntities(componentTypes).findAny().orElse(null);
     }
 
-    default <T extends EntityComponent> boolean has(EntityId entity, Class<T> componentClass) {
+    default boolean has(EntityId entity, Class<? extends EntityComponent> componentClass) {
         return get(entity, componentClass) != null;
+    }
+
+    default boolean hasAll(EntityId entity, Class<? extends EntityComponent>... componentClasses) {
+        for (Class<? extends EntityComponent> componentClass : componentClasses) {
+            if(!has(entity, componentClass)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     default List<EntityComponent> components(EntityId entity) {

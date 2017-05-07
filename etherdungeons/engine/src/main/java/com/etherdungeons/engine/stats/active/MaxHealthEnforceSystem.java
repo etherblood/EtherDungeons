@@ -1,12 +1,8 @@
 package com.etherdungeons.engine.stats.active;
 
-import com.etherdungeons.engine.core.Target;
-import com.etherdungeons.engine.stats.active.ActiveHealth;
 import com.etherdungeons.engine.stats.buffed.BuffedHealth;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *

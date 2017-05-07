@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.abilities.effects;
+package com.etherdungeons.engine.gameflow.triggers.conditions;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -6,7 +6,7 @@ import com.etherdungeons.entitysystem.EntityComponent;
  *
  * @author Philipp
  */
-public class Effect implements EntityComponent {
+public class ArgsPositionEmptyCondition implements EntityComponent {
 
     @Override
     public String toString() {

@@ -6,9 +6,9 @@ package com.etherdungeons.entitysystem;
  */
 public interface EntityData extends EntityDataReadonly {
 
-    void set(EntityId entity, EntityComponent component);
+    <T extends EntityComponent> T set(EntityId entity, T component);
 
-    void remove(EntityId entity, Class<? extends EntityComponent> componentClass);
+    <T extends EntityComponent> T remove(EntityId entity, Class<T> componentClass);
 
     EntityId createEntity();
 

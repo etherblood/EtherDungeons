@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.abilities.endturn;
+package com.etherdungeons.engine.effects.endturn;
 
 import com.etherdungeons.engine.commands.Command;
 
