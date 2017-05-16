@@ -30,7 +30,7 @@ public interface EntityDataReadonly {
         return get(entity, componentClass) != null;
     }
 
-    default boolean hasAll(EntityId entity, Class<? extends EntityComponent>... componentClasses) {
+    default boolean hasAll(EntityId entity, Class<? extends EntityComponent>[] componentClasses) {
         for (Class<? extends EntityComponent> componentClass : componentClasses) {
             if(!has(entity, componentClass)) {
                 return false;
@@ -38,15 +38,16 @@ public interface EntityDataReadonly {
         }
         return true;
     }
+    
+    default boolean isEmpty(EntityId entity) {
+        return !streamComponents(entity).findAny().isPresent();
+    }
 
     default List<EntityComponent> components(EntityId entity) {
-        List<EntityComponent> components = new ArrayList<>();
-        for (Class<? extends EntityComponent> componentClass : registeredComponentClasses()) {
-            EntityComponent component = get(entity, componentClass);
-            if (component != null) {
-                components.add(component);
-            }
-        }
-        return components;
+        return streamComponents(entity).collect(Collectors.toList());
+    }
+
+    default Stream<? extends EntityComponent> streamComponents(EntityId entity) {
+        return registeredComponentClasses().stream().map(type -> get(entity, type)).filter(comp -> comp != null);
     }
 }

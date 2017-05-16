@@ -5,10 +5,10 @@
  */
 package com.etherdungeons.engine.gameflow.triggers.conditions;
 
-import com.etherdungeons.engine.core.Target;
-import com.etherdungeons.engine.gameflow.ActiveTurn;
+import com.etherdungeons.engine.gameflow.phases.ActiveTurn;
 import com.etherdungeons.engine.gameflow.triggers.TriggerRejected;
 import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
+import com.etherdungeons.engine.gameflow.triggers.triggerargs.TriggerArgsTargets;
 import com.etherdungeons.entitysystem.EntityDataImpl;
 import com.etherdungeons.entitysystem.EntityId;
 import org.junit.Test;
@@ -29,12 +29,12 @@ public class TargetActiveTurnConditionSystemTest {
         
         EntityId trigger = data.createEntity();
         data.set(trigger, new TargetActiveTurnCondition());
-        data.set(trigger, new Target(target));
         
         EntityId triggered = data.createEntity();
         data.set(triggered, new TriggerRequest(trigger));
+        data.set(triggered, new TriggerArgsTargets(target));
         
-        TargetActiveTurnConditionSystem instance = new TargetActiveTurnConditionSystem(data);
+        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem(data);
         instance.run();
         assertTrue(data.has(triggered, TriggerRequest.class));
         assertFalse(data.has(triggered, TriggerRejected.class));
@@ -48,12 +48,12 @@ public class TargetActiveTurnConditionSystemTest {
         
         EntityId trigger = data.createEntity();
         data.set(trigger, new TargetActiveTurnCondition());
-        data.set(trigger, new Target(target));
         
         EntityId triggered = data.createEntity();
         data.set(triggered, new TriggerRequest(trigger));
+        data.set(triggered, new TriggerArgsTargets(target));
         
-        TargetActiveTurnConditionSystem instance = new TargetActiveTurnConditionSystem(data);
+        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem(data);
         instance.run();
         assertFalse(data.has(triggered, TriggerRequest.class));
         assertTrue(data.has(triggered, TriggerRejected.class));
@@ -69,7 +69,7 @@ public class TargetActiveTurnConditionSystemTest {
         EntityId triggered = data.createEntity();
         data.set(triggered, new TriggerRequest(trigger));
         
-        TargetActiveTurnConditionSystem instance = new TargetActiveTurnConditionSystem(data);
+        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem(data);
         instance.run();
         assertFalse(data.has(triggered, TriggerRequest.class));
         assertTrue(data.has(triggered, TriggerRejected.class));

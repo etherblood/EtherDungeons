@@ -1,6 +1,6 @@
 package com.etherdungeons.engine.stats.buffed;
 
-import com.etherdungeons.engine.core.Target;
+import com.etherdungeons.engine.stats.additive.AdditiveStatsTarget;
 import com.etherdungeons.entitysystem.EntityComponent;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
@@ -25,8 +25,8 @@ public abstract class AbstractBuffedStatUpdateSystem<Base extends EntityComponen
             data.remove(entity, getBuffedStatClass());
         }
         Map<EntityId, Integer> additiveStat = new HashMap<>();
-        for (EntityId buff : data.entities(getAdditiveStatClass(), Target.class)) {
-            EntityId target = data.get(buff, Target.class).getTarget();
+        for (EntityId buff : data.entities(getAdditiveStatClass(), AdditiveStatsTarget.class)) {
+            EntityId target = data.get(buff, AdditiveStatsTarget.class).getTarget();
             int stat = additiveStat.getOrDefault(target, 0);
             stat += getAdditiveStatValue(data.get(buff, getAdditiveStatClass()));
             additiveStat.put(target, stat);

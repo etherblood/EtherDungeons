@@ -33,7 +33,7 @@ public class PayTriggerCostSystem implements Runnable {
                 boolean costsAffordable = true;
 
                 ActiveActionPoints ap = null;
-                ActionPointsCost apCost = data.get(investor, ActionPointsCost.class);
+                ActionPointsCost apCost = data.get(trigger, ActionPointsCost.class);
                 if (costsAffordable && apCost != null) {
                     ActiveActionPoints currentAp = data.get(investor, ActiveActionPoints.class);
                     if (currentAp == null || currentAp.getAp() < apCost.getAp()) {
@@ -44,7 +44,7 @@ public class PayTriggerCostSystem implements Runnable {
                 }
 
                 ActiveMovePoints mp = null;
-                MovePointsCost mpCost = data.get(investor, MovePointsCost.class);
+                MovePointsCost mpCost = data.get(trigger, MovePointsCost.class);
                 if (costsAffordable && mpCost != null) {
                     ActiveMovePoints currentMp = data.get(investor, ActiveMovePoints.class);
                     if (currentMp == null || currentMp.getMp() < mpCost.getMp()) {
@@ -55,7 +55,7 @@ public class PayTriggerCostSystem implements Runnable {
                 }
 
                 ActiveHealth hp = null;
-                HealthCost hpCost = data.get(investor, HealthCost.class);
+                HealthCost hpCost = data.get(trigger, HealthCost.class);
                 if (costsAffordable && hpCost != null) {
                     ActiveHealth currentHp = data.get(investor, ActiveHealth.class);
                     if (currentHp == null || currentHp.getHealth() < hpCost.getHealth()) {
