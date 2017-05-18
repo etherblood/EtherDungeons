@@ -26,13 +26,8 @@ public class CleanupSystem implements Runnable {
             EntityId trigger = data.get(triggerArgs, Triggered.class).getTrigger();
             if (data.has(trigger, CleanupEffect.class)) {
                 for (EntityId target : data.get(triggerArgs, TriggerArgsTargets.class).getTargets()) {
-                    log.info("clearing entity {} with components {}", target, data.components(target));
+                    log.info("cleaning entity {} with components {}", target, data.components(target));
                     data.clearEntity(target);
-//                    for (EntityId cascade : data.entities(CascadeCleanup.class)) {
-//                        if (data.get(cascade, CascadeCleanup.class).getTarget().equals(target)) {
-//                            data.clearEntity(cascade);
-//                        }
-//                    }
                 }
             }
         }

@@ -2,7 +2,6 @@ package com.etherdungeons.engine.gameflow.triggers;
 
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
-import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

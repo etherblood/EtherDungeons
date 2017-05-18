@@ -1,6 +1,6 @@
 package com.etherdungeons.engine.gameflow.triggers.conditions;
 
-import com.etherdungeons.engine.gameflow.phases.CurrentRound;
+import com.etherdungeons.engine.gameflow.effects.turnflow.phases.CurrentRound;
 import com.etherdungeons.engine.gameflow.triggers.TriggerRejected;
 import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
 import com.etherdungeons.entitysystem.EntityData;

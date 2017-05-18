@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.gameflow.phases;
+package com.etherdungeons.engine.stats.active.reset;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -6,11 +6,10 @@ import com.etherdungeons.entitysystem.EntityComponent;
  *
  * @author Philipp
  */
-public class ActiveTurn implements EntityComponent {
+public class ResetApEffect implements EntityComponent {
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{}";
     }
-
 }

@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.gameflow.phases;
+package com.etherdungeons.engine.gameflow.effects.turnflow.phases;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 

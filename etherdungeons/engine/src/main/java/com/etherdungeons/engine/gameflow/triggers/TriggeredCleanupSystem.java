@@ -7,18 +7,17 @@ import com.etherdungeons.entitysystem.EntityId;
  *
  * @author Philipp
  */
-public class TriggerSystem implements Runnable {
+public class TriggeredCleanupSystem implements Runnable {
     private final EntityData data;
 
-    public TriggerSystem(EntityData data) {
+    public TriggeredCleanupSystem(EntityData data) {
         this.data = data;
     }
 
     @Override
     public void run() {
-        for (EntityId entity : data.entities(TriggerRequest.class)) {
-            TriggerRequest removed = data.remove(entity, TriggerRequest.class);
-            data.set(entity, new Triggered(removed.getTrigger()));
+        for (EntityId entity : data.entities(Triggered.class)) {
+            data.clearEntity(entity);
         }
     }
     

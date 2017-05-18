@@ -1,6 +1,6 @@
 package com.etherdungeons.engine.gameflow.effects.targeting;
 
-import com.etherdungeons.engine.gameflow.phases.ActiveTurn;
+import com.etherdungeons.engine.gameflow.effects.turnflow.phases.ActiveTurn;
 import com.etherdungeons.engine.gameflow.triggers.*;
 import com.etherdungeons.engine.gameflow.triggers.triggerargs.TriggerArgsTargets;
 import com.etherdungeons.entitysystem.EntityData;

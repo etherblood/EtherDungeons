@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.stats.reset;
+package com.etherdungeons.engine.stats.active.reset;
 
 import com.etherdungeons.engine.stats.active.ActiveMovePoints;
 import com.etherdungeons.engine.stats.buffed.BuffedMovePoints;

@@ -21,9 +21,7 @@ public abstract class AbstractBuffedStatUpdateSystem<Base extends EntityComponen
 
     @Override
     public void run() {
-        for (EntityId entity : data.entities(getBuffedStatClass())) {
-            data.remove(entity, getBuffedStatClass());
-        }
+        data.removeAllComponents(getBuffedStatClass());
         Map<EntityId, Integer> additiveStat = new HashMap<>();
         for (EntityId buff : data.entities(getAdditiveStatClass(), AdditiveStatsTarget.class)) {
             EntityId target = data.get(buff, AdditiveStatsTarget.class).getTarget();

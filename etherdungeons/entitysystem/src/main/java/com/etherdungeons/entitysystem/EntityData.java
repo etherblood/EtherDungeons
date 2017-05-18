@@ -17,4 +17,12 @@ public interface EntityData extends EntityDataReadonly {
             remove(entity, componentClass);
         }
     }
+
+    void removeAllComponents(Class<? extends EntityComponent> componentClass);
+    
+    default void clear() {
+        for (Class<? extends EntityComponent> componentClass : registeredComponentClasses()) {
+            removeAllComponents(componentClass);
+        }
+    }
 }

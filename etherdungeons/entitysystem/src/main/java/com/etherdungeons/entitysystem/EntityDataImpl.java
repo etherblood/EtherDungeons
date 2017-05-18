@@ -81,6 +81,11 @@ public class EntityDataImpl implements EntityData, EntityDataReadonly {
     }
 
     @Override
+    public void removeAllComponents(Class<? extends EntityComponent> componentClass) {
+        getComponentMap(componentClass).clear();
+    }
+
+    @Override
     public Set<Class<? extends EntityComponent>> registeredComponentClasses() {
         return componentMaps.keySet();
     }

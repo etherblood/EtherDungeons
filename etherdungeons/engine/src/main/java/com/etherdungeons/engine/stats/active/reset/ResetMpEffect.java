@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.stats.reset;
+package com.etherdungeons.engine.stats.active.reset;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
@@ -10,6 +10,6 @@ public class ResetMpEffect implements EntityComponent {
 
     @Override
     public String toString() {
-        return "ResetMpEffect{" + '}';
+        return getClass().getSimpleName() + "{}";
     }
 }

@@ -1,6 +1,6 @@
 package com.etherdungeons.engine.gameflow.triggers.conditions;
 
-import com.etherdungeons.engine.gameflow.phases.ActiveTurn;
+import com.etherdungeons.engine.gameflow.effects.turnflow.phases.ActiveTurn;
 import com.etherdungeons.engine.gameflow.triggers.TriggerRejected;
 import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
 import com.etherdungeons.engine.gameflow.triggers.triggerargs.TriggerArgsTargets;

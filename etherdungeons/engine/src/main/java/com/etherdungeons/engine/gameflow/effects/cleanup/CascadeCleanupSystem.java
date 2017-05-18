@@ -28,7 +28,7 @@ public class CascadeCleanupSystem implements Runnable {
     private boolean tryCascadeClean(EntityId entity) {
         EntityId target = data.get(entity, CascadeCleanup.class).getTarget();
         if(data.isEmpty(target) || (data.has(target, CascadeCleanup.class) && tryCascadeClean(target))) {
-            log.info("cascade clearing entity {} with components {}", entity, data.components(entity));
+            log.info("cascade cleaning entity {} with components {}", entity, data.components(entity));
             data.clearEntity(entity);
             return true;
         }

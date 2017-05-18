@@ -1,4 +1,4 @@
-package com.etherdungeons.engine.gameflow.effects.endturn;
+package com.etherdungeons.engine.gameflow.effects.turnflow;
 
 import com.etherdungeons.entitysystem.EntityComponent;
 
