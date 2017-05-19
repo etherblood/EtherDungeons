@@ -30,11 +30,7 @@ public class StartTurnSystem implements Runnable {
         if (entity != null) {
             EntityId actor = data.get(entity, TriggerArgsTargets.class).getTarget();
             data.set(actor, new ActiveTurn());
-
             log.info("started turn {}", actor);
-            for (EntityId trigger : data.entities(StartTurnTrigger.class)) {
-                data.set(data.createEntity(), new TriggerRequest(trigger));
-            }
         }
     }
 

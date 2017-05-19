@@ -1,6 +1,6 @@
 package com.etherdungeons.entitysystem;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,8 +18,8 @@ public interface EntityDataReadonly {
 
     Set<Class<? extends EntityComponent>> registeredComponentClasses();
 
-    default Set<EntityId> entities(Class<?>... componentTypes) {
-        return streamEntities(componentTypes).collect(Collectors.toSet());
+    default List<EntityId> entities(Class<?>... componentTypes) {
+        return streamEntities(componentTypes).collect(Collectors.toList());
     }
 
     default EntityId entity(Class<?>... componentTypes) {

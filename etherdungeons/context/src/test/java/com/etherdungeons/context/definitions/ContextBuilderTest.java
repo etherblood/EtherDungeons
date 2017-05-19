@@ -1,5 +1,7 @@
-package com.etherdungeons.context;
+package com.etherdungeons.context.definitions;
 
+import com.etherdungeons.context.Context;
+import com.etherdungeons.context.ContextBuilder;
 import com.etherdungeons.context.definitions.BeanDefinitionFactory;
 import com.etherdungeons.context.dependencies.BeanDependencyFactory;
 import java.util.Arrays;

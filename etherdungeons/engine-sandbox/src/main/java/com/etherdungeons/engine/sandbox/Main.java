@@ -56,8 +56,10 @@ import com.etherdungeons.engine.gameflow.effects.turnflow.StartGameEffect;
 import com.etherdungeons.engine.gameflow.effects.turnflow.StartGameSystem;
 import com.etherdungeons.engine.gameflow.effects.turnflow.StartRoundSystem;
 import com.etherdungeons.engine.gameflow.effects.turnflow.StartTurnSystem;
+import com.etherdungeons.engine.gameflow.triggers.EndTurnTriggerSystem;
 import com.etherdungeons.engine.gameflow.triggers.PostResolveTriggerRequest;
 import com.etherdungeons.engine.gameflow.triggers.PostResolveTriggerSystem;
+import com.etherdungeons.engine.gameflow.triggers.StartTurnTriggerSystem;
 import com.etherdungeons.engine.gameflow.triggers.TriggeredCleanupSystem;
 import com.etherdungeons.engine.stats.active.ActiveActionPoints;
 import com.etherdungeons.engine.stats.cost.MovePointsCost;
@@ -73,14 +75,11 @@ import com.etherdungeons.entitysystem.EntityDataImpl;
 import com.etherdungeons.entitysystem.EntityDataReadonly;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import org.slf4j.Logger;
@@ -117,6 +116,8 @@ public class Main {
         contextBuilder.add(PayTriggerCostSystem.class.getConstructor(EntityData.class));
         contextBuilder.add(TriggerRejectedSystem.class.getConstructor(EntityData.class));
         contextBuilder.add(TriggerSystem.class.getConstructor(EntityData.class));
+        contextBuilder.add(StartTurnTriggerSystem.class.getConstructor(EntityData.class));
+        contextBuilder.add(EndTurnTriggerSystem.class.getConstructor(EntityData.class));
         contextBuilder.add(MoveSystem.class.getConstructor(EntityData.class, GameMap.class));
         contextBuilder.add(EndTurnSystem.class.getConstructor(EntityData.class));
         contextBuilder.add(NextTurnSystem.class.getConstructor(EntityData.class));
@@ -312,8 +313,8 @@ public class Main {
     private static final String ANSI_GREEN = "\u001B[32m";
     private static final String ANSI_BLUE = "\u001B[34m";
     private static void printDiff(EntityDataReadonly prev, EntityDataReadonly next, boolean printUnchanged) {
-        Set<EntityId> prevEntities = prev.entities();
-        Set<EntityId> nextEntities = next.entities();
+        Set<EntityId> prevEntities = new HashSet<>(prev.entities());
+        Set<EntityId> nextEntities = new HashSet<>(next.entities());
         
         Set<EntityId> union = new HashSet<>(prevEntities);
         union.addAll(nextEntities);

@@ -10,21 +10,20 @@ import static org.junit.Assert.*;
  *
  * @author Philipp
  */
-public class TriggerSystemTest {
+public class TriggeredCleanupSystemTest {
 
+    
     @Test
-    public void trigger() {
+    public void cleanup() {
         EntityDataImpl data = new EntityDataImpl();
-        TriggerSystem instance = new TriggerSystem(data);
-        
-        EntityId trigger = data.createEntity();
+        TriggeredCleanupSystem instance = new TriggeredCleanupSystem(data);
         
         EntityId triggeredArgs = data.createEntity();
-        data.set(triggeredArgs, new TriggerRequest(trigger));
+        data.set(triggeredArgs, new Triggered(data.createEntity()));
+        data.set(triggeredArgs, new Name("test"));
         
         instance.run();
-        assertEquals(trigger, data.get(triggeredArgs, Triggered.class).getTrigger());
-        assertFalse(data.has(triggeredArgs, TriggerRequest.class));
+        assertTrue(data.components(triggeredArgs).isEmpty());
     }
 
 }

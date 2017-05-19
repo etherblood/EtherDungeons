@@ -1,6 +1,8 @@
 package com.etherdungeons.entitysystem;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -9,26 +11,32 @@ import java.util.stream.Stream;
  */
 public class EntityDataImpl implements EntityData, EntityDataReadonly {
 
-    private final HashMap<Class<? extends EntityComponent>, HashMap<EntityId, EntityComponent>> componentMaps = new HashMap<>();
-    private final EntityIdFactory factory;
+    private final HashMap<Class<? extends EntityComponent>, HashMap<EntityId, EntityComponent>> componentMaps = new LinkedHashMap<>();
+    private final Function<Class<? extends EntityComponent>, HashMap<EntityId, EntityComponent>> componentMapFactory;
+    private final Supplier<EntityId> entityIdFactory;
     private final boolean useAutosort;
     private final Comparator<Class<? extends EntityComponent>> classComparator = Comparator.comparingInt(c -> getComponentMap(c).size());
 
     public EntityDataImpl() {
-        this(new IncrementalEntityIdFactory());
+        this(new IncrementalEntityIdFactory()::createEntity);
     }
 
-    public EntityDataImpl(EntityIdFactory factory) {
+    public EntityDataImpl(Supplier<EntityId> factory) {
         this(factory, true);
     }
 
-    public EntityDataImpl(EntityIdFactory factory, boolean useAutosort) {
-        this.factory = factory;
+    public EntityDataImpl(Supplier<EntityId> factory, boolean useAutosort) {
+        this(factory, c -> new LinkedHashMap<>(), useAutosort);
+    }
+
+    public EntityDataImpl(Supplier<EntityId> factory, Function<Class<? extends EntityComponent>, HashMap<EntityId, EntityComponent>> componentMapFactory, boolean useAutosort) {
+        this.entityIdFactory = factory;
+        this.componentMapFactory = componentMapFactory;
         this.useAutosort = useAutosort;
     }
 
     private HashMap<EntityId, EntityComponent> getComponentMap(Class<? extends EntityComponent> componentClass) {
-        return componentMaps.computeIfAbsent(componentClass, c -> new HashMap<>());
+        return componentMaps.computeIfAbsent(componentClass, componentMapFactory);
     }
 
     @Override
@@ -92,6 +100,6 @@ public class EntityDataImpl implements EntityData, EntityDataReadonly {
 
     @Override
     public EntityId createEntity() {
-        return factory.createEntity();
+        return entityIdFactory.get();
     }
 }
