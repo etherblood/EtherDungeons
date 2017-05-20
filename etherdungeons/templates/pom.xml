@@ -6,19 +6,18 @@
         <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>engine-sandbox</artifactId>
+    <artifactId>templates</artifactId>
     <packaging>jar</packaging>
     
     <dependencies>
         <dependency>
             <groupId>com.etherdungeons</groupId>
-            <artifactId>engine</artifactId>
+            <artifactId>entitysystem</artifactId>
         </dependency>
         <dependency>
             <groupId>com.etherdungeons</groupId>
-            <artifactId>templates</artifactId>
+            <artifactId>util</artifactId>
         </dependency>
-        
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
