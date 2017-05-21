@@ -1,35 +1,29 @@
 {
     "endturnability": {
-        "components": {
-            "#1": {
-                "Name": ["#2"],
-                "EndTurnEffect": [],
-                "TargetActiveTurnCondition": [],
-                "FixedEffectTargets": [["#0"]]
-            }
+        "#1": {
+            "Name": ["#2"],
+            "EndTurnEffect": [],
+            "TargetActiveTurnCondition": [],
+            "FixedEffectTargets": [["#0"]]
         }
     },
     "moveability": {
-        "components": {
-            "#1": {
-                "Name": ["#2"],
-                "MoveEffect": [],
-                "HasTriggerCost": ["#0"],
-                "MovePointsCost": [1],
-                "TargetActiveTurnCondition": [],
-                "FixedEffectTargets": [["#0"]]
-            }
+        "#1": {
+            "Name": ["#2"],
+            "MoveEffect": [],
+            "HasTriggerCost": ["#0"],
+            "MovePointsCost": [1],
+            "TargetActiveTurnCondition": [],
+            "FixedEffectTargets": [["#0"]]
         }
     },
     "regenerationability": {
-        "components": {
-            "#1": {
-                "Name": ["#2"],
-                "EndTurnTrigger": [],
-                "TargetActiveTurnCondition": [],
-                "HealEffect": ["#3"],
-                "FixedEffectTargets": [["#0"]]
-            }
+        "#1": {
+            "Name": ["#2"],
+            "EndTurnTrigger": [],
+            "TargetActiveTurnCondition": [],
+            "HealEffect": ["#3"],
+            "FixedEffectTargets": [["#0"]]
         }
     }
 }

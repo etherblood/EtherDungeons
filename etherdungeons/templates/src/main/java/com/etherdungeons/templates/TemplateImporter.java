@@ -45,17 +45,10 @@ public class TemplateImporter {
     }
 
     private boolean bakeTemplate(JsonObject jsonTemplate) {
-        JsonObject jsonTemplates = jsonTemplate.getAsJsonObject("templates");
-        if (jsonTemplates != null) {
-            JsonObject jsonComponents = jsonTemplate.getAsJsonObject("components");
-            if (jsonComponents == null) {
-                jsonComponents = new JsonObject();
-                jsonTemplate.add("components", jsonComponents);
-            }
-
-            Iterator<Map.Entry<String, JsonElement>> it = jsonTemplates.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<String, JsonElement> entry = it.next();
+        Iterator<Map.Entry<String, JsonElement>> iterator = jsonTemplate.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, JsonElement> entry = iterator.next();
+            if (!entry.getKey().startsWith("#")) {
                 JsonObject childTemplate = templates.get(entry.getKey());
                 if (childTemplate == null || !bakeTemplate(childTemplate)) {
                     return false;
@@ -65,13 +58,9 @@ public class TemplateImporter {
                 for (int i = 0; i < jsonParams.size(); i++) {
                     replaceMap.put("#" + i, jsonParams.get(i));
                 }
-                JsonObject sourceComponents = childTemplate.getAsJsonObject("components");
-                if (sourceComponents != null) {
-                    mergeChilds(sourceComponents, jsonComponents, replaceMap);
-                }
-                it.remove();
+                mergeChilds(childTemplate, jsonTemplate, replaceMap);
+                iterator.remove();
             }
-            jsonTemplate.remove("templates");
         }
         return true;
     }
@@ -149,19 +138,12 @@ public class TemplateImporter {
         for (int i = 0; i < params.length; i++) {
             paramsMap.put("#" + i, params[i]);
         }
-        applyTemplate(data, jsonTemplate, paramsMap);
-    }
-
-    private void applyTemplate(EntityData data, JsonObject jsonTemplate, Map<String, Object> paramsMap) throws ReflectiveOperationException {
-        JsonObject jsonComponents = jsonTemplate.getAsJsonObject("components");
-        if (jsonComponents != null) {
-            applyComponents(data, jsonComponents, paramsMap);
-        }
+        applyComponents(data, jsonTemplate, paramsMap);
     }
 
     private void applyComponents(EntityData data, JsonObject jsonObject, Map<String, Object> paramsMap) throws ReflectiveOperationException {
         for (Map.Entry<String, JsonElement> entityEntry : jsonObject.entrySet()) {
-            EntityId entity = (EntityId) paramsMap.get(entityEntry.getKey());
+            EntityId entity = (EntityId) paramsMap.computeIfAbsent(entityEntry.getKey(), s -> data.createEntity());
             JsonObject jsonComponents = entityEntry.getValue().getAsJsonObject();
             for (Map.Entry<String, JsonElement> componentEntry : jsonComponents.entrySet()) {
                 Constructor<?> constructor = aliasToConstructor.get(componentEntry.getKey());

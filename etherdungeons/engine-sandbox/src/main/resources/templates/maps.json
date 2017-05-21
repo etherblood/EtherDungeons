@@ -1,40 +1,34 @@
 {
     "test_map": {
-        "components": {
-            "#0": {
-                "Position": [2, 2]
-            },
-            "#1": {
-                "Position": [2, 7]
-            },
-            "#2": {
-                "Position": [7, 7]
-            },
-            "#3": {
-                "Position": [7, 2]
-            }
+        "#0": {
+            "Position": [2, 2]
         },
-        "templates": {
-            "gamestate": ["#4", "#5", "#6"]
-        }
+        "#1": {
+            "Position": [2, 7]
+        },
+        "#2": {
+            "Position": [7, 7]
+        },
+        "#3": {
+            "Position": [7, 2]
+        },
+        "gamestate": ["#4", "#5", "#6"]
     },
     "gamestate": {
-        "components": {
-            "#0": {
-                "Name": ["GameState"],
-                "GameState": []
-            },
-            "#1": {
-                "StartGameEffect": [],
-                "PostResolveTriggerRequest": ["#1"]
-            },
-            "#2": {
-                "Name": ["EndTurnActivePlayerEffects"],
-                "EndTurnTrigger": [],
-                "ActivePlayerEffectTarget": [],
-                "ResetApEffect": [],
-                "ResetMpEffect": []
-            }
+        "#0": {
+            "Name": ["GameState"],
+            "GameState": []
+        },
+        "#1": {
+            "StartGameEffect": [],
+            "PostResolveTriggerRequest": ["#1"]
+        },
+        "#2": {
+            "Name": ["EndTurnActivePlayerEffects"],
+            "EndTurnTrigger": [],
+            "ActivePlayerEffectTarget": [],
+            "ResetApEffect": [],
+            "ResetMpEffect": []
         }
     }
 }

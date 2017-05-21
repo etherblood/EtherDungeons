@@ -65,11 +65,8 @@ public class Main {
 
         for (int i = 0; i < 3; i++) {
             EntityId robert = data.createEntity();
-            importer.applyTemplate(data, "robert", robert, data.createEntity(), data.createEntity());
+            importer.applyTemplate(data, "robert", robert);
             mapParams.add(robert);
-        }
-        for (int i = 0; i < 3; i++) {
-            mapParams.add(data.createEntity());
         }
         importer.applyTemplate(data, "test_map", mapParams.toArray());
 
