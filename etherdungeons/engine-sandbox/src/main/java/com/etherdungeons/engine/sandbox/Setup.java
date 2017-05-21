@@ -72,6 +72,7 @@ import java.util.Collection;
  * @author Philipp
  */
 public class Setup {
+
     public Context createContext() throws NoSuchMethodException {
         ContextBuilder contextBuilder = new ContextBuilder();
         contextBuilder.add(EntityDataImpl.class.getConstructor());
@@ -119,35 +120,36 @@ public class Setup {
         contextBuilder.add(PostResolveTriggerSystem.class.getConstructor(EntityData.class));
         return contextBuilder.build();
     }
-    
+
     public TemplateImporter createImporter() throws NoSuchMethodException {
         TemplateImporter importer = new TemplateImporter();
-        
-        importer.register(AdditiveActionPoints.class.getConstructor(int.class));
-        importer.register(MinRoundNumberCondition.class.getConstructor(int.class));
-        importer.register(CascadeCleanup.class.getConstructor(EntityId.class));
-        importer.register(CleanupEffect.class.getConstructor());
-        importer.register(HealEffect.class.getConstructor(int.class));
-        importer.register(MovePointsCost.class.getConstructor(int.class));
-        importer.register(HasTriggerCost.class.getConstructor(EntityId.class));
-        importer.register(FixedEffectTargets.class.getConstructor(EntityId[].class));
-        importer.register(TargetActiveTurnCondition.class.getConstructor());
-        importer.register(MoveEffect.class.getConstructor());
-        importer.register(EndTurnEffect.class.getConstructor());
-        importer.register(ResetMpEffect.class.getConstructor());
-        importer.register(ResetApEffect.class.getConstructor());
-        importer.register(ActivePlayerEffectTarget.class.getConstructor());
-        importer.register(EndTurnTrigger.class.getConstructor());
-        importer.register(PostResolveTriggerRequest.class.getConstructor(EntityId.class));
-        importer.register(StartGameEffect.class.getConstructor());
-        importer.register(Name.class.getConstructor(String.class));
-        importer.register(Actor.class.getConstructor());
-        importer.register(GameState.class.getConstructor());
-        importer.register(Position.class.getConstructor(int.class, int.class));
-        importer.register(BaseInitiative.class.getConstructor(int.class));
-        importer.register(BaseHealth.class.getConstructor(int.class));
-        importer.register(BaseActionPoints.class.getConstructor(int.class));
-        importer.register(BaseMovePoints.class.getConstructor(int.class));
+
+        importer.registerComponent(AdditiveActionPoints.class.getConstructor(int.class));
+        importer.registerComponent(MinRoundNumberCondition.class.getConstructor(int.class));
+        importer.registerComponent(CascadeCleanup.class.getConstructor(EntityId.class));
+        importer.registerComponent(CleanupEffect.class.getConstructor());
+        importer.registerComponent(HealEffect.class.getConstructor(int.class));
+        importer.registerComponent(MovePointsCost.class.getConstructor(int.class));
+        importer.registerComponent(HasTriggerCost.class.getConstructor(EntityId.class));
+        importer.registerComponent(FixedEffectTargets.class.getConstructor(EntityId[].class));
+        importer.registerComponent(TargetActiveTurnCondition.class.getConstructor());
+        importer.registerComponent(MoveEffect.class.getConstructor());
+        importer.registerComponent(EndTurnEffect.class.getConstructor());
+        importer.registerComponent(ResetMpEffect.class.getConstructor());
+        importer.registerComponent(ResetApEffect.class.getConstructor());
+        importer.registerComponent(ActivePlayerEffectTarget.class.getConstructor());
+        importer.registerComponent(EndTurnTrigger.class.getConstructor());
+        importer.registerComponent(PostResolveTriggerRequest.class.getConstructor(EntityId.class));
+        importer.registerComponent(StartGameEffect.class.getConstructor());
+        importer.registerComponent(Name.class.getConstructor(String.class));
+        importer.registerComponent(Actor.class.getConstructor());
+        importer.registerComponent(GameState.class.getConstructor());
+        importer.registerComponent(Position.class.getConstructor(int.class, int.class));
+        importer.registerComponent(BaseInitiative.class.getConstructor(int.class));
+        importer.registerComponent(BaseHealth.class.getConstructor(int.class));
+        importer.registerComponent(BaseActionPoints.class.getConstructor(int.class));
+        importer.registerComponent(BaseMovePoints.class.getConstructor(int.class));
         return importer;
     }
+    
 }

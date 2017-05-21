@@ -16,6 +16,10 @@ import com.etherdungeons.entitysystem.EntityDataReadonly;
 import com.etherdungeons.templates.TemplateImporter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,50 +44,44 @@ public class Main {
         Logger log = LoggerFactory.getLogger(Main.class);
         
         TemplateImporter importer = new Setup().createImporter();
-        Templates templates = new Templates();
+        for (String file : Arrays.asList("maps", "characters", "abilities")) {
+            try(Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/templates/" + file + ".json"))) {
+                importer.readTemplate(reader);
+            }
+        }
+        
         Context context = new Setup().createContext();
         context.getBean(GameMap.class).setSize(10, 10);
 
+        List<Object> mapParams = new ArrayList<>();
+        
         EntityData data = context.getBean(EntityData.class);
-
-        importer.importTemplate(data, templates.startState(), data.createEntity());
-
         EntityId amara = data.createEntity();
-        importer.importTemplates(data, amara,
-                templates.name("Amara"),
-                templates.actor(),
-                templates.position(2, 4),
-                templates.baseStats(10, 17, 7, 4),
-                templates.regenerationAbility("AmaraRegeneration", 2));
-        EntityId amaraMove = data.createEntity();
-        importer.importTemplate(data, templates.moveAbility("AmaraMove"), amara, amaraMove);
         EntityId amaraEndTurn = data.createEntity();
-        importer.importTemplate(data, templates.endTurnAbility("AmaraEndTurn"), amara, amaraEndTurn);
+        EntityId amaraMove = data.createEntity();
+        EntityId amaraRegenerate = data.createEntity();
+        importer.applyTemplate(data, "amara", amara, amaraEndTurn, amaraMove, amaraRegenerate);
+        mapParams.add(amara);
 
-        EntityId robert = data.createEntity();
-        importer.importTemplates(data, robert,
-                templates.name("Robert"),
-                templates.actor(),
-                templates.position(5, 7),
-                templates.baseStats(9, 13, 4, 2));
-        EntityId robertEndTurn = data.createEntity();
-        importer.importTemplate(data, templates.endTurnAbility("RobertEndTurn"), robert, robertEndTurn);
-
-        EntityId expiringApBuff = data.createEntity();
-        importer.importTemplates(data, expiringApBuff,
-                templates.name("ExpiringApBuff"),
-                templates.endTurnRoundExpire("ApBuffExpireEffect", 2));
-        importer.importTemplate(data, templates.duoApBuff("ApBuffApEffect", 2), expiringApBuff, amara, robert);
+        for (int i = 0; i < 3; i++) {
+            EntityId robert = data.createEntity();
+            importer.applyTemplate(data, "robert", robert, data.createEntity(), data.createEntity());
+            mapParams.add(robert);
+        }
+        for (int i = 0; i < 3; i++) {
+            mapParams.add(data.createEntity());
+        }
+        importer.applyTemplate(data, "test_map", mapParams.toArray());
 
         update(context, log);
-        handleCommand(context, new MoveCommand(amaraEndTurn, new Position(3, 4)), log);
-        handleCommand(context, new MoveCommand(amaraEndTurn, new Position(3, 3)), log);
-        handleCommand(context, new MoveCommand(amaraEndTurn, new Position(4, 3)), log);
-        logState(data, log);
+        handleCommand(context, new MoveCommand(amaraMove, new Position(3, 4)), log);
+        handleCommand(context, new MoveCommand(amaraMove, new Position(3, 3)), log);
+        handleCommand(context, new MoveCommand(amaraMove, new Position(4, 3)), log);
+//        logState(data, log);
         handleCommand(context, new EndTurnCommand(amaraEndTurn), log);
 //        logState(data, log);
-        handleCommand(context, new EndTurnCommand(robertEndTurn), log);
-//        logState(data, log);
+//        handleCommand(context, new EndTurnCommand(robertEndTurn), log);
+////        logState(data, log);
     }
 
     private static void logState(EntityData data, Logger log) {
