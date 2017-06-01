@@ -3,8 +3,7 @@
         "#1": {
             "Name": ["#2"],
             "EndTurnEffect": [],
-            "TargetActiveTurnCondition": [],
-            "FixedEffectTargets": [["#0"]]
+            "Ability": ["#0"]
         }
     },
     "moveability": {
@@ -13,11 +12,21 @@
             "MoveEffect": [],
             "HasTriggerCost": ["#0"],
             "MovePointsCost": [1],
-            "TargetActiveTurnCondition": [],
-            "FixedEffectTargets": [["#0"]]
+            "Ability": ["#0"],
+            "AbilityOwnerTarget": []
         }
     },
-    "regenerationability": {
+    "spiritclawability": {
+        "#1": {
+            "Name": ["#2"],
+            "SpiritClawEffect": [],
+            "HasTriggerCost": ["#0"],
+            "ActionPointsCost": [4],
+            "Ability": ["#0"],
+            "TriggerArgsPositionTarget": []
+        }
+    },
+    "regenerationeffect": {
         "#1": {
             "Name": ["#2"],
             "EndTurnTrigger": [],

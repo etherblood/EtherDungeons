@@ -1,6 +1,9 @@
 package com.etherdungeons.engine.gameflow.triggers;
 
-import com.etherdungeons.engine.core.Name;
+import com.etherdungeons.engine.data.gameflow.triggers.TriggerRequest;
+import com.etherdungeons.engine.data.gameflow.triggers.Triggered;
+import com.etherdungeons.engine.data.gameflow.triggers.TriggerSystem;
+import com.etherdungeons.engine.data.core.Name;
 import com.etherdungeons.entitysystem.EntityDataImpl;
 import com.etherdungeons.entitysystem.EntityId;
 import org.junit.Test;

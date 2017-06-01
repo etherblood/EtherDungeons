@@ -1,8 +1,10 @@
 package com.etherdungeons.engine.stats.buffed;
 
-import com.etherdungeons.engine.stats.additive.AdditiveHealth;
-import com.etherdungeons.engine.stats.additive.AdditiveStatsTarget;
-import com.etherdungeons.engine.stats.base.BaseHealth;
+import com.etherdungeons.engine.data.stats.buffed.BuffedHealth;
+import com.etherdungeons.engine.data.stats.buffed.BuffedHealthUpdateSystem;
+import com.etherdungeons.engine.data.stats.additive.AdditiveHealth;
+import com.etherdungeons.engine.data.stats.additive.AdditiveStatsTarget;
+import com.etherdungeons.engine.data.stats.base.BaseHealth;
 import com.etherdungeons.entitysystem.EntityDataImpl;
 import com.etherdungeons.entitysystem.EntityId;
 import org.junit.Test;

@@ -1,9 +1,11 @@
 package com.etherdungeons.engine.gameflow.triggers.conditions;
 
-import com.etherdungeons.engine.gameflow.triggers.TriggerRejected;
-import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
-import com.etherdungeons.engine.gameflow.triggers.triggerargs.TriggerArgsTargets;
-import com.etherdungeons.engine.position.Position;
+import com.etherdungeons.engine.data.gameflow.triggers.conditions.ArgsMaxDistanceToTargetCondition;
+import com.etherdungeons.engine.data.gameflow.triggers.conditions.ArgsMaxDistanceToTargetConditionSystem;
+import com.etherdungeons.engine.data.gameflow.triggers.TriggerRejected;
+import com.etherdungeons.engine.data.gameflow.triggers.TriggerRequest;
+import com.etherdungeons.engine.data.gameflow.triggers.triggerargs.TriggerArgsTargets;
+import com.etherdungeons.engine.data.position.Position;
 import com.etherdungeons.entitysystem.EntityDataImpl;
 import com.etherdungeons.entitysystem.EntityId;
 import org.junit.Test;

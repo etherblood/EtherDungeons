@@ -1,8 +1,10 @@
 package com.etherdungeons.engine.stats.buffed;
 
-import com.etherdungeons.engine.stats.additive.AdditiveActionPoints;
-import com.etherdungeons.engine.stats.additive.AdditiveStatsTarget;
-import com.etherdungeons.engine.stats.base.BaseActionPoints;
+import com.etherdungeons.engine.data.stats.buffed.BuffedActionPointsUpdateSystem;
+import com.etherdungeons.engine.data.stats.buffed.BuffedActionPoints;
+import com.etherdungeons.engine.data.stats.additive.AdditiveActionPoints;
+import com.etherdungeons.engine.data.stats.additive.AdditiveStatsTarget;
+import com.etherdungeons.engine.data.stats.base.BaseActionPoints;
 import com.etherdungeons.entitysystem.EntityDataImpl;
 import com.etherdungeons.entitysystem.EntityId;
 import org.junit.Test;

@@ -1,6 +1,8 @@
 package com.etherdungeons.engine.gameflow.triggers;
 
-import com.etherdungeons.engine.core.Name;
+import com.etherdungeons.engine.data.gameflow.triggers.TriggerRejectedSystem;
+import com.etherdungeons.engine.data.gameflow.triggers.TriggerRejected;
+import com.etherdungeons.engine.data.core.Name;
 import com.etherdungeons.entitysystem.EntityDataImpl;
 import com.etherdungeons.entitysystem.EntityId;
 import org.junit.Test;

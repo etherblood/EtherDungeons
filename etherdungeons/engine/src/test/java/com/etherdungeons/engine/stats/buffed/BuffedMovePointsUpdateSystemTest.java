@@ -1,8 +1,10 @@
 package com.etherdungeons.engine.stats.buffed;
 
-import com.etherdungeons.engine.stats.additive.AdditiveMovePoints;
-import com.etherdungeons.engine.stats.additive.AdditiveStatsTarget;
-import com.etherdungeons.engine.stats.base.BaseMovePoints;
+import com.etherdungeons.engine.data.stats.buffed.BuffedMovePoints;
+import com.etherdungeons.engine.data.stats.buffed.BuffedMovePointsUpdateSystem;
+import com.etherdungeons.engine.data.stats.additive.AdditiveMovePoints;
+import com.etherdungeons.engine.data.stats.additive.AdditiveStatsTarget;
+import com.etherdungeons.engine.data.stats.base.BaseMovePoints;
 import com.etherdungeons.entitysystem.EntityDataImpl;
 import com.etherdungeons.entitysystem.EntityId;
 import org.junit.Test;

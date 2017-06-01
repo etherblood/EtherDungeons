@@ -1,6 +1,5 @@
 package com.etherdungeons.entitysystem;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,9 +29,10 @@ public interface EntityDataReadonly {
         return get(entity, componentClass) != null;
     }
 
-    default boolean hasAll(EntityId entity, Class<? extends EntityComponent>[] componentClasses) {
-        for (Class<? extends EntityComponent> componentClass : componentClasses) {
-            if(!has(entity, componentClass)) {
+    @SuppressWarnings("unchecked")
+    default boolean hasAll(EntityId entity, Class<?>... componentClasses) {
+        for (Class<?> componentClass : componentClasses) {
+            if(!has(entity, (Class<? extends EntityComponent>) componentClass)) {
                 return false;
             }
         }

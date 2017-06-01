@@ -3,7 +3,8 @@
         "character": ["#0", "Amara", 10, 11, 6, 3],
         "endturnability": ["#0", "#1", "AmaraEndTurnAbility"],
         "moveability": ["#0", "#2", "AmaraMoveAbility"],
-        "regenerationability": ["#0", "#3", "AmaraRegenerationAbility", 1]
+        "spiritclawability": ["#0", "#3", "AmaraSpiritClawAbility"],
+        "regenerationeffect": ["#0", "#4", "AmaraRegenerationAbility", 1]
     },
     "robert": {
         "character": ["#0", "Robert", 9, 15, 4, 2],

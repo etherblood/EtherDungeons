@@ -1,13 +1,14 @@
 package com.etherdungeons.engine.sandbox;
 
 import com.etherdungeons.context.Context;
-import com.etherdungeons.engine.commands.CommandDistributor;
-import com.etherdungeons.engine.position.map.GameMap;
-import com.etherdungeons.engine.commands.Command;
-import com.etherdungeons.engine.gameflow.effects.move.MoveCommand;
-import com.etherdungeons.engine.gameflow.effects.turnflow.endturn.EndTurnCommand;
-import com.etherdungeons.engine.gameflow.triggers.TriggerRequest;
-import com.etherdungeons.engine.position.Position;
+import com.etherdungeons.engine.actions.Action;
+import com.etherdungeons.engine.actions.ActionManager;
+import com.etherdungeons.engine.actions.implementations.EndTurnAction;
+import com.etherdungeons.engine.actions.implementations.MoveAction;
+import com.etherdungeons.engine.actions.implementations.SpiritClawAction;
+import com.etherdungeons.engine.data.position.map.GameMap;
+import com.etherdungeons.engine.data.gameflow.triggers.TriggerRequest;
+import com.etherdungeons.engine.data.position.Position;
 import com.etherdungeons.entitysystem.EntityComponent;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
@@ -59,24 +60,34 @@ public class Main {
         EntityId amara = data.createEntity();
         EntityId amaraEndTurn = data.createEntity();
         EntityId amaraMove = data.createEntity();
+        EntityId amaraSpiritClaw = data.createEntity();
         EntityId amaraRegenerate = data.createEntity();
-        importer.applyTemplate(data, "amara", amara, amaraEndTurn, amaraMove, amaraRegenerate);
+        importer.applyTemplate(data, "amara", amara, amaraEndTurn, amaraMove, amaraSpiritClaw, amaraRegenerate);
         mapParams.add(amara);
 
+        EntityId firstRobert = null;
         for (int i = 0; i < 3; i++) {
             EntityId robert = data.createEntity();
+            if(firstRobert == null) {
+                firstRobert = robert;
+            }
             importer.applyTemplate(data, "robert", robert);
             mapParams.add(robert);
         }
         importer.applyTemplate(data, "test_map", mapParams.toArray());
+        for (EntityId entity : data.entities(Position.class)) {
+            context.getBean(GameMap.class).add(entity, data.get(entity, Position.class));
+        }
 
         update(context, log);
-        handleCommand(context, new MoveCommand(amaraMove, new Position(3, 4)), log);
-        handleCommand(context, new MoveCommand(amaraMove, new Position(3, 3)), log);
-        handleCommand(context, new MoveCommand(amaraMove, new Position(4, 3)), log);
+        handleCommand(context, amara, new MoveAction(amaraMove, new Position(2, 3)), log);
+        handleCommand(context, amara, new MoveAction(amaraMove, new Position(2, 4)), log);
+        handleCommand(context, amara, new MoveAction(amaraMove, new Position(2, 5)), log);
+        handleCommand(context, amara, new SpiritClawAction(amaraSpiritClaw, new Position(2, 7)), log);
 //        logState(data, log);
-        handleCommand(context, new EndTurnCommand(amaraEndTurn), log);
+        handleCommand(context, amara, new EndTurnAction(amaraEndTurn), log);
 //        logState(data, log);
+        log.info("{}", context.getBean(ActionManager.class).availableActions(firstRobert));
 //        handleCommand(context, new EndTurnCommand(robertEndTurn), log);
 ////        logState(data, log);
     }
@@ -92,8 +103,12 @@ public class Main {
         log.info("state:\n{}", gson.toJson(map));
     }
 
-    private static void handleCommand(Context context, Command command, Logger log) {
-        context.getBean(CommandDistributor.class).handle(command);
+    private static void handleCommand(Context context, EntityId actor, Action command, Logger log) {
+        ActionManager actionManager = context.getBean(ActionManager.class);
+        if(!actionManager.isValid(actor, command)) {
+            throw new UnsupportedOperationException(command.toString());
+        }
+        actionManager.handle(actor, command);
         update(context, log);
     }
 
