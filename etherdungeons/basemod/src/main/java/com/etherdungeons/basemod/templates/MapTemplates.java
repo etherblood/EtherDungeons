@@ -33,22 +33,10 @@ public class MapTemplates implements TemplateProvider {
         return templates;
     }
 
-    static void initPosition(EntityData data, Object... params) {
-        initPosition(data, (EntityId) params[0], (Position) params[1]);
-    }
-
-    static void initPosition(EntityData data, EntityId target, Position position) {
-        EntityId triggerArgs = data.createEntity();
-        data.set(triggerArgs, new MoveEffect());
-        data.set(triggerArgs, new TriggerArgsTargets(target));
-        data.set(triggerArgs, position);
-        data.set(triggerArgs, new TriggerRequest(triggerArgs));
-    }
-
     static void testMap(EntityData data, Object... params) {
-        Position[] positions = new Position[]{new Position(2, 2), new Position(7, 7), new Position(2, 7), new Position(7, 2)};
+        Position[] positions = new Position[]{new Position(2, 2), new Position(17, 17), new Position(2, 17), new Position(17, 2)};
         for (int i = 0; i < Math.min(4, params.length); i++) {
-            initPosition(data, (EntityId) params[i], positions[i]);
+            data.set((EntityId) params[i], positions[i]);
         }
         gamestate(data);
     }

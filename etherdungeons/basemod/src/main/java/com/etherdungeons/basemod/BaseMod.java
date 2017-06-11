@@ -31,8 +31,6 @@ import com.etherdungeons.basemod.data.gameflow.triggers.conditions.ArgsMaxDistan
 import com.etherdungeons.basemod.data.gameflow.triggers.conditions.MinRoundNumberConditionSystem;
 import com.etherdungeons.basemod.data.gameflow.triggers.conditions.TargetsActiveTurnConditionSystem;
 import com.etherdungeons.basemod.data.gameflow.triggers.cost.PayTriggerCostSystem;
-import com.etherdungeons.basemod.data.position.map.GameMap;
-import com.etherdungeons.basemod.data.position.map.MapInitSystem;
 import com.etherdungeons.basemod.data.stats.active.MaxHealthEnforceSystem;
 import com.etherdungeons.basemod.data.stats.active.reset.ResetApSystem;
 import com.etherdungeons.basemod.data.stats.active.reset.ResetHealthSystem;
@@ -80,11 +78,10 @@ public class BaseMod implements Mod {
 
     private void init() throws NoSuchMethodException {
         add(ORDER_DEFAULT, EntityDataImpl.class.getConstructor());
-        add(ORDER_DEFAULT, GameMap.class.getConstructor());
         add(ORDER_DEFAULT, ActionManager.class.getConstructor(Collection.class));
         add(ORDER_DEFAULT, MoveGenerator.class.getConstructor(EntityData.class));
         add(ORDER_DEFAULT, EndTurnGenerator.class.getConstructor(EntityData.class));
-        add(ORDER_DEFAULT, SpiritClawGenerator.class.getConstructor(EntityData.class, GameMap.class));
+        add(ORDER_DEFAULT, SpiritClawGenerator.class.getConstructor(EntityData.class));
         
         add(ORDER_DEFAULT, TemplateService.class.getConstructor(Collection.class));
         add(ORDER_DEFAULT, AbilityTemplates.class.getConstructor());
@@ -94,7 +91,7 @@ public class BaseMod implements Mod {
         add(ORDER_TARGETING, FixedEffectTargetsSystem.class.getConstructor(EntityData.class));
         add(ORDER_TARGETING, AbilityOwnerTargetSystem.class.getConstructor(EntityData.class));
         add(ORDER_TARGETING, ActivePlayerEffectTargetSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TARGETING, TriggerArgsPositionTargetSystem.class.getConstructor(EntityData.class, GameMap.class));
+        add(ORDER_TARGETING, TriggerArgsPositionTargetSystem.class.getConstructor(EntityData.class));
 
         add(ORDER_CONDITION, TargetsActiveTurnConditionSystem.class.getConstructor(EntityData.class));
         add(ORDER_CONDITION, ArgsMaxDistanceToTargetConditionSystem.class.getConstructor(EntityData.class));
@@ -104,11 +101,10 @@ public class BaseMod implements Mod {
         add(ORDER_TRIGGER, TriggerRejectedSystem.class.getConstructor(EntityData.class));
         add(ORDER_TRIGGER, TriggerSystem.class.getConstructor(EntityData.class));
         add(ORDER_TRIGGER, StartGameSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, MapInitSystem.class.getConstructor(EntityData.class, GameMap.class));
         add(ORDER_TRIGGER, StartTurnTriggerSystem.class.getConstructor(EntityData.class));
         add(ORDER_TRIGGER, EndTurnTriggerSystem.class.getConstructor(EntityData.class));
         add(ORDER_TRIGGER, SpiritClawSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, MoveSystem.class.getConstructor(EntityData.class, GameMap.class));
+        add(ORDER_TRIGGER, MoveSystem.class.getConstructor(EntityData.class));
         add(ORDER_TRIGGER, EndTurnSystem.class.getConstructor(EntityData.class));
         add(ORDER_TRIGGER, NextTurnSystem.class.getConstructor(EntityData.class));
         add(ORDER_TRIGGER, StartTurnSystem.class.getConstructor(EntityData.class));

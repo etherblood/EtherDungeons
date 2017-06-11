@@ -11,8 +11,8 @@ import java.util.stream.Stream;
  */
 public class EntityDataImpl implements EntityData, EntityDataReadonly {
 
-    private final HashMap<Class<? extends EntityComponent>, HashMap<EntityId, EntityComponent>> componentMaps = new LinkedHashMap<>();
-    private final Function<Class<? extends EntityComponent>, HashMap<EntityId, EntityComponent>> componentMapFactory;
+    private final HashMap<Class<? extends EntityComponent>, ComponentMap<EntityComponent>> componentMaps = new LinkedHashMap<>();
+    private final Function<Class<? extends EntityComponent>, ComponentMap<EntityComponent>> componentMapFactory;
     private final Supplier<EntityId> entityIdFactory;
     private final boolean useAutosort;
     private final Comparator<Class<? extends EntityComponent>> classComparator = Comparator.comparingInt(c -> getComponentMap(c).size());
@@ -26,16 +26,16 @@ public class EntityDataImpl implements EntityData, EntityDataReadonly {
     }
 
     public EntityDataImpl(Supplier<EntityId> factory, boolean useAutosort) {
-        this(factory, c -> new LinkedHashMap<>(), useAutosort);
+        this(factory, c -> new ComponentMapImpl<>(), useAutosort);
     }
 
-    public EntityDataImpl(Supplier<EntityId> factory, Function<Class<? extends EntityComponent>, HashMap<EntityId, EntityComponent>> componentMapFactory, boolean useAutosort) {
+    public EntityDataImpl(Supplier<EntityId> factory, Function<Class<? extends EntityComponent>, ComponentMap<EntityComponent>> componentMapFactory, boolean useAutosort) {
         this.entityIdFactory = factory;
         this.componentMapFactory = componentMapFactory;
         this.useAutosort = useAutosort;
     }
 
-    private HashMap<EntityId, EntityComponent> getComponentMap(Class<? extends EntityComponent> componentClass) {
+    private ComponentMap<EntityComponent> getComponentMap(Class<? extends EntityComponent> componentClass) {
         return componentMaps.computeIfAbsent(componentClass, componentMapFactory);
     }
 
@@ -47,13 +47,13 @@ public class EntityDataImpl implements EntityData, EntityDataReadonly {
 
     @Override
     public boolean has(EntityId entity, Class<? extends EntityComponent> componentClass) {
-        return getComponentMap(componentClass).containsKey(entity);
+        return getComponentMap(componentClass).has(entity);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T extends EntityComponent> T set(EntityId entity, T component) {
-        return (T) getComponentMap(component.getClass()).put(entity, component);
+        return (T) getComponentMap(component.getClass()).set(entity, component);
     }
 
     @Override
@@ -68,20 +68,20 @@ public class EntityDataImpl implements EntityData, EntityDataReadonly {
         Class<? extends EntityComponent>[] types = (Class<? extends EntityComponent>[]) componentTypes;
         switch (componentTypes.length) {
             case 0:
-                return componentMaps.values().stream().flatMap(m -> m.keySet().stream()).distinct();
+                return componentMaps.values().stream().flatMap(m -> m.entities().stream()).distinct();
             case 1:
-                return getComponentMap(types[0]).keySet().stream();
+                return getComponentMap(types[0]).entities().stream();
             default:
                 if (useAutosort) {
                     Arrays.sort(types, classComparator);
                 }
-                return getComponentMap(types[0]).keySet().stream().filter(id -> filter(id, types));
+                return getComponentMap(types[0]).entities().stream().filter(id -> filter(id, types));
         }
     }
 
     private boolean filter(EntityId id, Class<? extends EntityComponent>[] componentTypes) {
         for (int i = 1; i < componentTypes.length; i++) {
-            if (!getComponentMap(componentTypes[i]).containsKey(id)) {
+            if (!getComponentMap(componentTypes[i]).has(id)) {
                 return false;
             }
         }

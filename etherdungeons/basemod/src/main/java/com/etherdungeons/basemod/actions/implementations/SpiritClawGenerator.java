@@ -6,8 +6,8 @@ import com.etherdungeons.basemod.data.gameflow.effects.Ability;
 import com.etherdungeons.basemod.data.gameflow.effects.spiritclaw.SpiritClawEffect;
 import com.etherdungeons.basemod.data.gameflow.effects.turnflow.phases.ActiveTurn;
 import com.etherdungeons.basemod.data.gameflow.triggers.TriggerRequest;
+import com.etherdungeons.basemod.data.position.MapUtil;
 import com.etherdungeons.basemod.data.position.Position;
-import com.etherdungeons.basemod.data.position.map.GameMap;
 import com.etherdungeons.basemod.data.stats.active.ActiveActionPoints;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
@@ -24,11 +24,9 @@ public class SpiritClawGenerator implements ActionGenerator<SpiritClawAction> {
     private static final int AP_COST = 4;
 
     private final EntityData data;
-    private final GameMap map;
 
-    public SpiritClawGenerator(EntityData data, GameMap map) {
+    public SpiritClawGenerator(EntityData data) {
         this.data = data;
-        this.map = map;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class SpiritClawGenerator implements ActionGenerator<SpiritClawAction> {
                 for (EntityId effect : data.entities(SpiritClawEffect.class, Ability.class)) {
                     EntityId owner = data.get(effect, Ability.class).getOwner();
                     if(actor.equals(owner)) {
-                        for (Position pos : map.legalManhattanTargetSquares(data.get(actor, Position.class), RANGE, LINE_OF_SIGHT)) {
+                        for (Position pos : MapUtil.legalManhattanTargetSquares(data, data.get(actor, Position.class), RANGE, LINE_OF_SIGHT)) {
                             actions.add(new SpiritClawAction(effect, pos));
                         }
                     }

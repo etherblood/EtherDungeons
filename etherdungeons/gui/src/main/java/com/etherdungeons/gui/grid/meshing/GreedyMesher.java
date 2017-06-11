@@ -147,10 +147,7 @@ public final class GreedyMesher {
 //                if (neighborPos0 == 0) {
                 if (pos0 + 1 == size0) {
                     neighborPos0 = 0;
-                    neighborChunk = chunk.getNeighbor(neighborDirection);
-                    if (neighborChunk == null) {
-                        break;
-                    }
+                    break;
                 } else {
                     neighborPos0 = pos0 + 1;
                 }
@@ -202,33 +199,17 @@ public final class GreedyMesher {
             int pos_1 = pos1 + i;
             ArrayChunk n = c;
             if (pos_1 == -1) {
-                n = c.getNeighbor(axisDirection[axis1].inverse());
-                if (n == null) {
-                    continue;
-                }
-                pos_1 = size1 - 1;
+                continue;
             } else if (pos_1 == size1) {
-                n = c.getNeighbor(axisDirection[axis1]);
-                if (n == null) {
-                    continue;
-                }
-                pos_1 = 0;
+                continue;
             }
             for (int j = -1; j <= 1; j++) {
                 int pos_2 = pos2 + j;
                 ArrayChunk n2 = n;
                 if (pos_2 == -1) {
-                    n2 = n.getNeighbor(axisDirection[axis2].inverse());
-                    if (n2 == null) {
-                        continue;
-                    }
-                    pos_2 = size2 - 1;
+                    continue;
                 } else if (pos_2 == size2) {
-                    n2 = n.getNeighbor(axisDirection[axis2]);
-                    if (n2 == null) {
-                        continue;
-                    }
-                    pos_2 = 0;
+                    continue;
                 }
 
                 if (n2.getBlockFast(pos_0 * index0 + pos_1 * index1 + pos_2 * index2) != 0) {

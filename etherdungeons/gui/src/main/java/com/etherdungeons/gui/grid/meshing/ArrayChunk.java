@@ -1,7 +1,6 @@
 package com.etherdungeons.gui.grid.meshing;
 
 import java.util.Arrays;
-import java.util.EnumMap;
 
 /**
  *
@@ -10,7 +9,6 @@ import java.util.EnumMap;
 public class ArrayChunk {
     private final byte[] blocks;
     private final ChunkSize size;
-    private final EnumMap<Direction, ArrayChunk> neighbors = new EnumMap<>(Direction.class);
 
     public ArrayChunk(ChunkSize size) {
         if(size == null) {
@@ -36,14 +34,6 @@ public class ArrayChunk {
         int startIndex = indexY(startY);
         int endIndex = indexY(endY);
         setBlocksFast(startIndex, endIndex, value);
-    }
-
-    public void setNeighbor(Direction direction, ArrayChunk neighbor) {
-        neighbors.put(direction, neighbor);
-    }
-
-    public ArrayChunk getNeighbor(Direction direction) {
-        return neighbors.get(direction);
     }
     
     public final ChunkSize getSize() {
