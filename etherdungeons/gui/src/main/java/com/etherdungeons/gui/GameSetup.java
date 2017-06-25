@@ -26,7 +26,7 @@ public class GameSetup {
     }
 
     private static Context initGameThrows() throws ReflectiveOperationException, IOException {
-        Context gameContext = new ModCombiner(new BaseMod()).build();
+        Context gameContext = new ModCombiner(new BaseMod(), new GuiMod()).build();
         TemplateService templates = gameContext.getBean(TemplateService.class);
         EntityData data = gameContext.getBean(EntityData.class);
 

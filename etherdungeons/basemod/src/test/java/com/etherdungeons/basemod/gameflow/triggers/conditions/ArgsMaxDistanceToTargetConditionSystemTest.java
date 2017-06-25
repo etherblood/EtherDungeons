@@ -23,7 +23,7 @@ public class ArgsMaxDistanceToTargetConditionSystemTest {
     @Test
     public void distanceSmallerThanMax() {
         EntityDataImpl data = new EntityDataImpl();
-        ArgsMaxDistanceToTargetConditionSystem instance = new ArgsMaxDistanceToTargetConditionSystem(data);
+        ArgsMaxDistanceToTargetConditionSystem instance = new ArgsMaxDistanceToTargetConditionSystem();
         
         EntityId target = data.createEntity();
         data.set(target, new Position(0, 0));
@@ -36,14 +36,14 @@ public class ArgsMaxDistanceToTargetConditionSystemTest {
         data.set(triggerArgs, new TriggerRequest(trigger));
         data.set(triggerArgs, new TriggerArgsTargets(target));
         
-        instance.run();
+        instance.run(data);
         assertEquals(trigger, data.get(triggerArgs, TriggerRequest.class).getTrigger());
     }
 
     @Test
     public void distanceGreaterThanMax() {
         EntityDataImpl data = new EntityDataImpl();
-        ArgsMaxDistanceToTargetConditionSystem instance = new ArgsMaxDistanceToTargetConditionSystem(data);
+        ArgsMaxDistanceToTargetConditionSystem instance = new ArgsMaxDistanceToTargetConditionSystem();
         
         EntityId target = data.createEntity();
         data.set(target, new Position(0, 0));
@@ -56,7 +56,7 @@ public class ArgsMaxDistanceToTargetConditionSystemTest {
         data.set(triggerArgs, new TriggerRequest(trigger));
         data.set(triggerArgs, new TriggerArgsTargets(target));
         
-        instance.run();
+        instance.run(data);
         assertFalse(data.has(triggerArgs, TriggerRequest.class));
         assertEquals(trigger, data.get(triggerArgs, TriggerRejected.class).getTrigger());
     }

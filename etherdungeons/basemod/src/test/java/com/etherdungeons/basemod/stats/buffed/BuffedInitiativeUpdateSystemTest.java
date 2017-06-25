@@ -19,7 +19,7 @@ public class BuffedInitiativeUpdateSystemTest {
     @Test
     public void multipleBuffs() {
         EntityDataImpl data = new EntityDataImpl();
-        BuffedInitiativeUpdateSystem instance = new BuffedInitiativeUpdateSystem(data);
+        BuffedInitiativeUpdateSystem instance = new BuffedInitiativeUpdateSystem();
         
         EntityId base = data.createEntity();
         data.set(base, new BaseInitiative(10));
@@ -32,7 +32,7 @@ public class BuffedInitiativeUpdateSystemTest {
         data.set(buff2, new AdditiveStatsTarget(base));
         data.set(buff2, new AdditiveInitiative(4));
         
-        instance.run();
+        instance.run(data);
         assertEquals(19, data.get(base, BuffedInitiative.class).getInit());
     }
 

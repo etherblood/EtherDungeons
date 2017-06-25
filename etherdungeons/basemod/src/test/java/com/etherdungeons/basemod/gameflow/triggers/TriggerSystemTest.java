@@ -18,14 +18,14 @@ public class TriggerSystemTest {
     @Test
     public void trigger() {
         EntityDataImpl data = new EntityDataImpl();
-        TriggerSystem instance = new TriggerSystem(data);
+        TriggerSystem instance = new TriggerSystem();
         
         EntityId trigger = data.createEntity();
         
         EntityId triggeredArgs = data.createEntity();
         data.set(triggeredArgs, new TriggerRequest(trigger));
         
-        instance.run();
+        instance.run(data);
         assertEquals(trigger, data.get(triggeredArgs, Triggered.class).getTrigger());
         assertFalse(data.has(triggeredArgs, TriggerRequest.class));
     }

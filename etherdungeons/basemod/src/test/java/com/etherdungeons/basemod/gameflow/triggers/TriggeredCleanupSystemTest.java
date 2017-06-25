@@ -18,13 +18,13 @@ public class TriggeredCleanupSystemTest {
     @Test
     public void cleanup() {
         EntityDataImpl data = new EntityDataImpl();
-        TriggeredCleanupSystem instance = new TriggeredCleanupSystem(data);
+        TriggeredCleanupSystem instance = new TriggeredCleanupSystem();
         
         EntityId triggeredArgs = data.createEntity();
         data.set(triggeredArgs, new Triggered(data.createEntity()));
         data.set(triggeredArgs, new Name("test"));
         
-        instance.run();
+        instance.run(data);
         assertTrue(data.components(triggeredArgs).isEmpty());
     }
 

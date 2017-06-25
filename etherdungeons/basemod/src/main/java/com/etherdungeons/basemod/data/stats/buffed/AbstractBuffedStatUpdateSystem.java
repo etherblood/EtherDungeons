@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.stats.buffed;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.stats.additive.AdditiveStatsTarget;
 import com.etherdungeons.entitysystem.EntityComponent;
 import com.etherdungeons.entitysystem.EntityData;
@@ -11,16 +12,10 @@ import java.util.Map;
  *
  * @author Philipp
  */
-public abstract class AbstractBuffedStatUpdateSystem<Base extends EntityComponent, Additive extends EntityComponent, Buffed extends EntityComponent> implements Runnable {
-
-    protected final EntityData data;
-
-    public AbstractBuffedStatUpdateSystem(EntityData data) {
-        this.data = data;
-    }
+public abstract class AbstractBuffedStatUpdateSystem<Base extends EntityComponent, Additive extends EntityComponent, Buffed extends EntityComponent> implements GameSystem {
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         data.removeAllComponents(getBuffedStatClass());
         Map<EntityId, Integer> additiveStat = new HashMap<>();
         for (EntityId buff : data.entities(getAdditiveStatClass(), AdditiveStatsTarget.class)) {

@@ -1,19 +1,12 @@
 package com.etherdungeons.gui;
 
-import com.etherdungeons.gui.appstates.GridAppstate;
-import com.etherdungeons.basemod.data.gameflow.MapSize;
-import com.etherdungeons.basemod.data.gameflow.triggers.TriggerRequest;
 import com.etherdungeons.context.Context;
-import com.etherdungeons.entitysystem.EntityData;
-import com.etherdungeons.entitysystem.EntityDataReadonly;
-import com.etherdungeons.gui.appstates.CamAppstate;
-import com.etherdungeons.gui.appstates.InputAppstate;
-import com.etherdungeons.gui.appstates.ModelAppstate;
+import com.etherdungeons.gui.appstates.LobbyAppstate;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
-import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
-import java.util.List;
+import com.simsilica.lemur.GuiGlobals;
+import com.simsilica.lemur.style.BaseStyles;
 
 /**
  *
@@ -21,9 +14,13 @@ import java.util.List;
  */
 public class Main extends SimpleApplication {
 
+    private final Context gameContext;
+    
     public static void main(String[] args) {
         Context gameContext = new GameSetup().setup();
         Main app = new Main(gameContext);
+        
+        
         AppSettings settings = new AppSettings(true);
         settings.setResolution(1280, 720);
         settings.setVSync(true);
@@ -34,21 +31,25 @@ public class Main extends SimpleApplication {
     }
 
     public Main(Context gameContext) {
-        super(initAppStates(gameContext));
-    }
-    
-    private static AppState[] initAppStates(Context gameContext) {
-        EntityDataReadonly data = gameContext.getBean(EntityDataReadonly.class);
-        return new AppState[]{
-            new GridAppstate(data),
-            new InputAppstate(gameContext),
-            new ModelAppstate(data),
-            new CamAppstate(data)
-        };
+        super(new AppState[0]);
+        this.gameContext = gameContext;
     }
 
     @Override
     public void simpleInitApp() {
+        // Initialize the globals access so that the default
+        // components can find what they need.
+        GuiGlobals.initialize(this);
+        // Load the 'glass' style
+        BaseStyles.loadGlassStyle();
+        // Set 'glass' as the default style when not specified
+        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        stateManager.attachAll(gameContext.getBeans(AppState.class));
     }
 
 }

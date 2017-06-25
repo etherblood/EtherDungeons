@@ -36,8 +36,8 @@ public class TargetActiveTurnConditionSystemTest {
         data.set(triggered, new TriggerRequest(trigger));
         data.set(triggered, new TriggerArgsTargets(target));
         
-        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem(data);
-        instance.run();
+        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem();
+        instance.run(data);
         assertTrue(data.has(triggered, TriggerRequest.class));
         assertFalse(data.has(triggered, TriggerRejected.class));
     }
@@ -55,8 +55,8 @@ public class TargetActiveTurnConditionSystemTest {
         data.set(triggered, new TriggerRequest(trigger));
         data.set(triggered, new TriggerArgsTargets(target));
         
-        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem(data);
-        instance.run();
+        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem();
+        instance.run(data);
         assertFalse(data.has(triggered, TriggerRequest.class));
         assertTrue(data.has(triggered, TriggerRejected.class));
     }
@@ -71,8 +71,8 @@ public class TargetActiveTurnConditionSystemTest {
         EntityId triggered = data.createEntity();
         data.set(triggered, new TriggerRequest(trigger));
         
-        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem(data);
-        instance.run();
+        TargetsActiveTurnConditionSystem instance = new TargetsActiveTurnConditionSystem();
+        instance.run(data);
         assertFalse(data.has(triggered, TriggerRequest.class));
         assertTrue(data.has(triggered, TriggerRejected.class));
     }

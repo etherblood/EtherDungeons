@@ -2,17 +2,12 @@ package com.etherdungeons.basemod.data.stats.buffed;
 
 import com.etherdungeons.basemod.data.stats.additive.AdditiveHealth;
 import com.etherdungeons.basemod.data.stats.base.BaseHealth;
-import com.etherdungeons.entitysystem.EntityData;
 
 /**
  *
  * @author Philipp
  */
 public class BuffedHealthUpdateSystem extends AbstractBuffedStatUpdateSystem<BaseHealth, AdditiveHealth, BuffedHealth>{
-
-    public BuffedHealthUpdateSystem(EntityData data) {
-        super(data);
-    }
 
     @Override
     protected Class<BaseHealth> getBaseStatClass() {

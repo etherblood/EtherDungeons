@@ -17,13 +17,13 @@ public class TriggerRejectedSystemTest {
     @Test
     public void cleanup() {
         EntityDataImpl data = new EntityDataImpl();
-        TriggerRejectedSystem instance = new TriggerRejectedSystem(data);
+        TriggerRejectedSystem instance = new TriggerRejectedSystem();
         
         EntityId triggeredArgs = data.createEntity();
         data.set(triggeredArgs, new TriggerRejected(data.createEntity(), "test"));
         data.set(triggeredArgs, new Name("test"));
         
-        instance.run();
+        instance.run(data);
         assertTrue(data.components(triggeredArgs).isEmpty());
     }
 

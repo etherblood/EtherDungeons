@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.effects.turnflow;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.gameflow.Actor;
 import com.etherdungeons.basemod.data.gameflow.GameState;
 import com.etherdungeons.basemod.data.gameflow.effects.turnflow.phases.CurrentRound;
@@ -20,28 +21,22 @@ import org.slf4j.LoggerFactory;
  *
  * @author Philipp
  */
-public class StartRoundSystem implements Runnable {
+public class StartRoundSystem implements GameSystem {
 
     private final Logger log = LoggerFactory.getLogger(StartRoundSystem.class);
-    private final EntityData data;
-    private final Comparator<EntityId> turnOrderComparator;
-
-    public StartRoundSystem(EntityData data) {
-        this.data = data;
-        Comparator<EntityId> comparator = Comparator.comparingInt(entity -> data.get(entity, BuffedInitiative.class).getInit());
-        comparator = comparator.reversed();
-        comparator = comparator.thenComparing(e -> e);
-        this.turnOrderComparator = comparator;
-    }
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         if (data.streamEntities(StartRoundEffect.class, Triggered.class).findAny().isPresent()) {
+            Comparator<EntityId> comparator = Comparator.comparingInt(entity -> data.get(entity, BuffedInitiative.class).getInit());
+            comparator = comparator.reversed();
+            comparator = comparator.thenComparing(e -> e);
+
             EntityId state = data.entity(GameState.class);
             int round = data.get(state, CurrentRound.class).getRound() + 1;
             data.set(state, new CurrentRound(round));
             List<EntityId> actors = data.streamEntities(Actor.class, BuffedInitiative.class)
-                    .sorted(turnOrderComparator)
+                    .sorted(comparator)
                     .collect(Collectors.toList());
 
             EntityId a = actors.get(0);

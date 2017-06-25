@@ -19,7 +19,7 @@ public class BuffedActionPointsUpdateSystemTest {
     @Test
     public void multipleBuffs() {
         EntityDataImpl data = new EntityDataImpl();
-        BuffedActionPointsUpdateSystem instance = new BuffedActionPointsUpdateSystem(data);
+        BuffedActionPointsUpdateSystem instance = new BuffedActionPointsUpdateSystem();
         
         EntityId base = data.createEntity();
         data.set(base, new BaseActionPoints(10));
@@ -32,7 +32,7 @@ public class BuffedActionPointsUpdateSystemTest {
         data.set(buff2, new AdditiveStatsTarget(base));
         data.set(buff2, new AdditiveActionPoints(4));
         
-        instance.run();
+        instance.run(data);
         assertEquals(19, data.get(base, BuffedActionPoints.class).getAp());
     }
 

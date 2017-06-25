@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.effects.turnflow;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.gameflow.effects.turnflow.phases.ActiveTurn;
 import com.etherdungeons.basemod.data.gameflow.triggers.PostResolveTriggerRequest;
 import com.etherdungeons.basemod.data.gameflow.triggers.Triggered;
@@ -12,17 +13,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Philipp
  */
-public class EndTurnSystem implements Runnable {
+public class EndTurnSystem implements GameSystem {
 
     private final Logger log = LoggerFactory.getLogger(EndTurnSystem.class);
-    private final EntityData data;
-
-    public EndTurnSystem(EntityData data) {
-        this.data = data;
-    }
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         if (data.streamEntities(Triggered.class).filter(e -> data.has(data.get(e, Triggered.class).getTrigger(), EndTurnEffect.class)).findAny().isPresent()) {
             log.info("ending turn {}", data.entity(ActiveTurn.class));
             EntityId entity = data.createEntity();

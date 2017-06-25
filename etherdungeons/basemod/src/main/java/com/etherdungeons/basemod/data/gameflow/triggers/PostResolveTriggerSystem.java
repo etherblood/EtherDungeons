@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.triggers;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
 import java.util.Optional;
@@ -8,15 +9,10 @@ import java.util.Optional;
  *
  * @author Philipp
  */
-public class PostResolveTriggerSystem implements Runnable {
-    private final EntityData data;
-
-    public PostResolveTriggerSystem(EntityData data) {
-        this.data = data;
-    }
+public class PostResolveTriggerSystem implements GameSystem {
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         if(!data.streamEntities(TriggerRequest.class).findAny().isPresent()) {
             Optional<EntityId> first = data.streamEntities(PostResolveTriggerRequest.class).sorted().findFirst();
             if(first.isPresent()) {

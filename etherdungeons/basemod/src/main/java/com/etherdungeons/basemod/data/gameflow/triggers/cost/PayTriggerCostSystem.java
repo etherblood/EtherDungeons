@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.triggers.cost;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.gameflow.triggers.TriggerRejected;
 import com.etherdungeons.basemod.data.gameflow.triggers.TriggerRequest;
 import com.etherdungeons.basemod.data.stats.active.ActiveActionPoints;
@@ -15,16 +16,10 @@ import com.etherdungeons.entitysystem.EntityId;
  *
  * @author Philipp
  */
-public class PayTriggerCostSystem implements Runnable {
-
-    private final EntityData data;
-
-    public PayTriggerCostSystem(EntityData data) {
-        this.data = data;
-    }
+public class PayTriggerCostSystem implements GameSystem {
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         for (EntityId entity : data.entities(TriggerRequest.class)) {
             EntityId trigger = data.get(entity, TriggerRequest.class).getTrigger();
             HasTriggerCost cost = data.get(trigger, HasTriggerCost.class);

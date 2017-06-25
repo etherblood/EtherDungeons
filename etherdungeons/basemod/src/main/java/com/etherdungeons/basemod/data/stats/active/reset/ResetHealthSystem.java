@@ -8,17 +8,13 @@ import com.etherdungeons.entitysystem.EntityId;
 
 public class ResetHealthSystem extends AbstractResetStatSystem<ResetHealthEffect> {
 
-    public ResetHealthSystem(EntityData data) {
-        super(data);
-    }
-
     @Override
     protected Class<ResetHealthEffect> getResetStatEffectClass() {
         return ResetHealthEffect.class;
     }
 
     @Override
-    protected void reset(ResetHealthEffect reset, EntityId target) {
+    protected void reset(EntityData data, ResetHealthEffect reset, EntityId target) {
         BuffedHealth ap = data.get(target, BuffedHealth.class);
         if(ap != null) {
             data.set(target, new ActiveHealth(ap.getHealth()));

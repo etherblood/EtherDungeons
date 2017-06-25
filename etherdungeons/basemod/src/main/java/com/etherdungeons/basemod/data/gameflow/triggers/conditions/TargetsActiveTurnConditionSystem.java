@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.triggers.conditions;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.gameflow.effects.turnflow.phases.ActiveTurn;
 import com.etherdungeons.basemod.data.gameflow.triggers.TriggerRejected;
 import com.etherdungeons.basemod.data.gameflow.triggers.TriggerRequest;
@@ -11,16 +12,10 @@ import com.etherdungeons.entitysystem.EntityId;
  *
  * @author Philipp
  */
-public class TargetsActiveTurnConditionSystem implements Runnable {
-
-    private final EntityData data;
-
-    public TargetsActiveTurnConditionSystem(EntityData data) {
-        this.data = data;
-    }
+public class TargetsActiveTurnConditionSystem implements GameSystem {
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         for (EntityId entity : data.entities(TriggerRequest.class)) {
             EntityId trigger = data.get(entity, TriggerRequest.class).getTrigger();
             if (data.has(trigger, TargetActiveTurnCondition.class)) {

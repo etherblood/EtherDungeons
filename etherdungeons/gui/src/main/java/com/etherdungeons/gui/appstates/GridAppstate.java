@@ -10,8 +10,7 @@ import com.etherdungeons.gui.grid.meshing.CubesMaterial;
 import com.etherdungeons.gui.grid.meshing.GreedyMesher;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
+import com.jme3.app.state.BaseAppState;
 import com.jme3.material.Material;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
@@ -21,16 +20,17 @@ import com.jme3.scene.Node;
  *
  * @author Philipp
  */
-public class GridAppstate extends AbstractAppState {
-
+public class GridAppstate extends BaseAppState {
+    private Node node;
     private final EntityDataReadonly data;
 
     public GridAppstate(EntityDataReadonly data) {
         this.data = data;
+        setEnabled(false);
     }
 
     @Override
-    public void initialize(AppStateManager stateManager, Application app) {
+    protected void initialize(Application app) {
         MapSize size = data.get(data.entity(MapSize.class), MapSize.class);
         
         ChunkSize chunkSize = new ChunkSize(size.getWidth() + 2, 4, size.getHeight() + 2);
@@ -48,7 +48,7 @@ public class GridAppstate extends AbstractAppState {
         GreedyMesher mesher = new GreedyMesher(blockSettings, chunkSize);
         ChunkMeshingResult meshingResult = mesher.generateMesh(chunk);
 
-        Node node = new Node("chunk");
+        node = new Node("chunk");
         Geometry opaque = new Geometry("opaque");
         opaque.setMesh(meshingResult.getOpaque());
         opaque.setQueueBucket(RenderQueue.Bucket.Opaque);
@@ -62,7 +62,20 @@ public class GridAppstate extends AbstractAppState {
         node.attachChild(transparent);
 
         node.setLocalTranslation(-1, -3, -1);
+    }
 
-        ((SimpleApplication) app).getRootNode().attachChild(node);
+    @Override
+    protected void cleanup(Application app) {
+        node = null;
+    }
+
+    @Override
+    protected void onEnable() {
+        ((SimpleApplication) getApplication()).getRootNode().attachChild(node);
+    }
+
+    @Override
+    protected void onDisable() {
+        ((SimpleApplication) getApplication()).getRootNode().detachChild(node);
     }
 }

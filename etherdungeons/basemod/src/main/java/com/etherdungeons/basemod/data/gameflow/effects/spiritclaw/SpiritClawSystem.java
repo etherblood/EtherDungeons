@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.effects.spiritclaw;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.gameflow.effects.damage.DamageEffect;
 import com.etherdungeons.basemod.data.gameflow.triggers.TriggerRequest;
 import com.etherdungeons.basemod.data.gameflow.triggers.Triggered;
@@ -11,17 +12,12 @@ import com.etherdungeons.entitysystem.EntityId;
  *
  * @author Philipp
  */
-public class SpiritClawSystem implements Runnable {
+public class SpiritClawSystem implements GameSystem {
 
     private static final int SPIRIT_CLAW_DAMAGE = 3;
-    private final EntityData data;
-
-    public SpiritClawSystem(EntityData data) {
-        this.data = data;
-    }
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         for (EntityId triggerArgs : data.entities(Triggered.class, TriggerArgsTargets.class)) {
             EntityId effect = data.get(triggerArgs, Triggered.class).getTrigger();
             if (data.has(effect, SpiritClawEffect.class)) {

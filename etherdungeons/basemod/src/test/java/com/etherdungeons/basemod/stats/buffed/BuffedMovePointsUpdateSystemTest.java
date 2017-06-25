@@ -19,7 +19,7 @@ public class BuffedMovePointsUpdateSystemTest {
     @Test
     public void multipleBuffs() {
         EntityDataImpl data = new EntityDataImpl();
-        BuffedMovePointsUpdateSystem instance = new BuffedMovePointsUpdateSystem(data);
+        BuffedMovePointsUpdateSystem instance = new BuffedMovePointsUpdateSystem();
         
         EntityId base = data.createEntity();
         data.set(base, new BaseMovePoints(10));
@@ -32,7 +32,7 @@ public class BuffedMovePointsUpdateSystemTest {
         data.set(buff2, new AdditiveStatsTarget(base));
         data.set(buff2, new AdditiveMovePoints(4));
         
-        instance.run();
+        instance.run(data);
         assertEquals(19, data.get(base, BuffedMovePoints.class).getMp());
     }
 

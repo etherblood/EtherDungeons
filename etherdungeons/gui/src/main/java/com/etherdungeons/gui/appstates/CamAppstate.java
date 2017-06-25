@@ -17,6 +17,7 @@ public class CamAppstate extends AbstractAppState {
 
     public CamAppstate(EntityDataReadonly data) {
         this.data = data;
+        setEnabled(false);
     }
 
     @Override

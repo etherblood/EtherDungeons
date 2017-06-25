@@ -1,11 +1,13 @@
 package com.etherdungeons.engine.sandbox;
 
 import com.etherdungeons.basemod.BaseMod;
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.actions.Action;
 import com.etherdungeons.basemod.actions.ActionManager;
 import com.etherdungeons.basemod.actions.implementations.EndTurnAction;
 import com.etherdungeons.basemod.actions.implementations.MoveAction;
 import com.etherdungeons.basemod.actions.implementations.SpiritClawAction;
+import com.etherdungeons.basemod.data.gameflow.GameState;
 import com.etherdungeons.basemod.data.gameflow.effects.Ability;
 import com.etherdungeons.basemod.data.gameflow.effects.move.MoveEffect;
 import com.etherdungeons.basemod.data.gameflow.effects.spiritclaw.SpiritClawEffect;
@@ -107,15 +109,15 @@ public class Main {
     }
 
     private static void update(Context context, Logger log) {
-        List<Runnable> runnables = context.getBeans(Runnable.class);
+        List<GameSystem> runnables = context.getBeans(GameSystem.class);
         EntityData data = context.getBean(EntityData.class);
 
         EntityDataImpl entityDataImpl = new EntityDataImpl();
         do {
             copyState(data, entityDataImpl);
-            for (Runnable runnable : runnables) {
+            for (GameSystem runnable : runnables) {
                 try {
-                    runnable.run();
+                    runnable.run(data);
                 } catch (Throwable t) {
                     log.info("{}", runnables);
                     logState(data, log);

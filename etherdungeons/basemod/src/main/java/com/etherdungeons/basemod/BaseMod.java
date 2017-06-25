@@ -82,52 +82,53 @@ public class BaseMod implements Mod {
         add(ORDER_DEFAULT, MoveGenerator.class.getConstructor(EntityData.class));
         add(ORDER_DEFAULT, EndTurnGenerator.class.getConstructor(EntityData.class));
         add(ORDER_DEFAULT, SpiritClawGenerator.class.getConstructor(EntityData.class));
+        add(ORDER_DEFAULT, GameController.class.getConstructor(EntityData.class, ActionManager.class, List.class));
         
         add(ORDER_DEFAULT, TemplateService.class.getConstructor(Collection.class));
         add(ORDER_DEFAULT, AbilityTemplates.class.getConstructor());
         add(ORDER_DEFAULT, CharacterTemplates.class.getConstructor());
         add(ORDER_DEFAULT, MapTemplates.class.getConstructor());
 
-        add(ORDER_TARGETING, FixedEffectTargetsSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TARGETING, AbilityOwnerTargetSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TARGETING, ActivePlayerEffectTargetSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TARGETING, TriggerArgsPositionTargetSystem.class.getConstructor(EntityData.class));
+        add(ORDER_TARGETING, FixedEffectTargetsSystem.class.getConstructor());
+        add(ORDER_TARGETING, AbilityOwnerTargetSystem.class.getConstructor());
+        add(ORDER_TARGETING, ActivePlayerEffectTargetSystem.class.getConstructor());
+        add(ORDER_TARGETING, TriggerArgsPositionTargetSystem.class.getConstructor());
 
-        add(ORDER_CONDITION, TargetsActiveTurnConditionSystem.class.getConstructor(EntityData.class));
-        add(ORDER_CONDITION, ArgsMaxDistanceToTargetConditionSystem.class.getConstructor(EntityData.class));
-        add(ORDER_CONDITION, MinRoundNumberConditionSystem.class.getConstructor(EntityData.class));
+        add(ORDER_CONDITION, TargetsActiveTurnConditionSystem.class.getConstructor());
+        add(ORDER_CONDITION, ArgsMaxDistanceToTargetConditionSystem.class.getConstructor());
+        add(ORDER_CONDITION, MinRoundNumberConditionSystem.class.getConstructor());
 
-        add(ORDER_TRIGGER_COST, PayTriggerCostSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, TriggerRejectedSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, TriggerSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, StartGameSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, StartTurnTriggerSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, EndTurnTriggerSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, SpiritClawSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, MoveSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, EndTurnSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, NextTurnSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, StartTurnSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, EndRoundSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, StartRoundSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, HealSystem.class.getConstructor(EntityData.class));
-        add(ORDER_TRIGGER, DamageSystem.class.getConstructor(EntityData.class));
+        add(ORDER_TRIGGER_COST, PayTriggerCostSystem.class.getConstructor());
+        add(ORDER_TRIGGER, TriggerRejectedSystem.class.getConstructor());
+        add(ORDER_TRIGGER, TriggerSystem.class.getConstructor());
+        add(ORDER_TRIGGER, StartGameSystem.class.getConstructor());
+        add(ORDER_TRIGGER, StartTurnTriggerSystem.class.getConstructor());
+        add(ORDER_TRIGGER, EndTurnTriggerSystem.class.getConstructor());
+        add(ORDER_TRIGGER, SpiritClawSystem.class.getConstructor());
+        add(ORDER_TRIGGER, MoveSystem.class.getConstructor());
+        add(ORDER_TRIGGER, EndTurnSystem.class.getConstructor());
+        add(ORDER_TRIGGER, NextTurnSystem.class.getConstructor());
+        add(ORDER_TRIGGER, StartTurnSystem.class.getConstructor());
+        add(ORDER_TRIGGER, EndRoundSystem.class.getConstructor());
+        add(ORDER_TRIGGER, StartRoundSystem.class.getConstructor());
+        add(ORDER_TRIGGER, HealSystem.class.getConstructor());
+        add(ORDER_TRIGGER, DamageSystem.class.getConstructor());
 
-        add(ORDER_STATS_UPDATE, BuffedHealthUpdateSystem.class.getConstructor(EntityData.class));
-        add(ORDER_STATS_UPDATE, BuffedInitiativeUpdateSystem.class.getConstructor(EntityData.class));
-        add(ORDER_STATS_UPDATE, BuffedMovePointsUpdateSystem.class.getConstructor(EntityData.class));
-        add(ORDER_STATS_UPDATE, BuffedActionPointsUpdateSystem.class.getConstructor(EntityData.class));
+        add(ORDER_STATS_UPDATE, BuffedHealthUpdateSystem.class.getConstructor());
+        add(ORDER_STATS_UPDATE, BuffedInitiativeUpdateSystem.class.getConstructor());
+        add(ORDER_STATS_UPDATE, BuffedMovePointsUpdateSystem.class.getConstructor());
+        add(ORDER_STATS_UPDATE, BuffedActionPointsUpdateSystem.class.getConstructor());
 
-        add(ORDER_STATS_UPDATE, ResetApSystem.class.getConstructor(EntityData.class));
-        add(ORDER_STATS_UPDATE, ResetMpSystem.class.getConstructor(EntityData.class));
-        add(ORDER_STATS_UPDATE, ResetHealthSystem.class.getConstructor(EntityData.class));
+        add(ORDER_STATS_UPDATE, ResetApSystem.class.getConstructor());
+        add(ORDER_STATS_UPDATE, ResetMpSystem.class.getConstructor());
+        add(ORDER_STATS_UPDATE, ResetHealthSystem.class.getConstructor());
 
-        add(ORDER_STATS_UPDATE, MaxHealthEnforceSystem.class.getConstructor(EntityData.class));
+        add(ORDER_STATS_UPDATE, MaxHealthEnforceSystem.class.getConstructor());
 
-        add(ORDER_POST, TriggeredCleanupSystem.class.getConstructor(EntityData.class));
-        add(ORDER_POST, CleanupSystem.class.getConstructor(EntityData.class));
-        add(ORDER_POST, CascadeCleanupSystem.class.getConstructor(EntityData.class));
-        add(ORDER_POST, PostResolveTriggerSystem.class.getConstructor(EntityData.class));
+        add(ORDER_POST, TriggeredCleanupSystem.class.getConstructor());
+        add(ORDER_POST, CleanupSystem.class.getConstructor());
+        add(ORDER_POST, CascadeCleanupSystem.class.getConstructor());
+        add(ORDER_POST, PostResolveTriggerSystem.class.getConstructor());
     }
     
     private void add(int priority, Constructor<?> constructor) {

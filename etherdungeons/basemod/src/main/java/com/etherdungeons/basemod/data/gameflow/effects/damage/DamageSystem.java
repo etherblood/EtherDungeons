@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.effects.damage;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.gameflow.triggers.Triggered;
 import com.etherdungeons.basemod.data.gameflow.triggers.triggerargs.TriggerArgsTargets;
 import com.etherdungeons.basemod.data.stats.active.ActiveHealth;
@@ -10,16 +11,10 @@ import com.etherdungeons.entitysystem.EntityId;
  *
  * @author Philipp
  */
-public class DamageSystem implements Runnable {
-
-    private final EntityData data;
-
-    public DamageSystem(EntityData data) {
-        this.data = data;
-    }
+public class DamageSystem implements GameSystem {
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         for (EntityId triggerArgs : data.entities(Triggered.class, TriggerArgsTargets.class)) {
             EntityId effect = data.get(triggerArgs, Triggered.class).getTrigger();
             if (data.has(effect, DamageEffect.class)) {

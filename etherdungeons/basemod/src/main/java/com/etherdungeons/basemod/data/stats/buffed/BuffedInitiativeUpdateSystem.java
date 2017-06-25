@@ -2,17 +2,12 @@ package com.etherdungeons.basemod.data.stats.buffed;
 
 import com.etherdungeons.basemod.data.stats.additive.AdditiveInitiative;
 import com.etherdungeons.basemod.data.stats.base.BaseInitiative;
-import com.etherdungeons.entitysystem.EntityData;
 
 /**
  *
  * @author Philipp
  */
 public class BuffedInitiativeUpdateSystem extends AbstractBuffedStatUpdateSystem<BaseInitiative, AdditiveInitiative, BuffedInitiative>{
-
-    public BuffedInitiativeUpdateSystem(EntityData data) {
-        super(data);
-    }
 
     @Override
     protected Class<BaseInitiative> getBaseStatClass() {

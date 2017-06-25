@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.effects.turnflow;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.gameflow.effects.turnflow.phases.ActiveTurn;
 import com.etherdungeons.basemod.data.gameflow.effects.turnflow.phases.NextActor;
 import com.etherdungeons.basemod.data.gameflow.triggers.PostResolveTriggerRequest;
@@ -12,16 +13,10 @@ import com.etherdungeons.entitysystem.EntityId;
  *
  * @author Philipp
  */
-public class NextTurnSystem implements Runnable {
-
-    private final EntityData data;
-
-    public NextTurnSystem(EntityData data) {
-        this.data = data;
-    }
+public class NextTurnSystem implements GameSystem {
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         if (data.streamEntities(NextTurnEffect.class, Triggered.class).findAny().isPresent()) {
             EntityId current = data.entity(ActiveTurn.class);
             data.remove(current, ActiveTurn.class);

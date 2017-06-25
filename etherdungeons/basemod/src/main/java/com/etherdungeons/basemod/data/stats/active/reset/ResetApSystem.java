@@ -8,17 +8,13 @@ import com.etherdungeons.entitysystem.EntityId;
 
 public class ResetApSystem extends AbstractResetStatSystem<ResetApEffect> {
 
-    public ResetApSystem(EntityData data) {
-        super(data);
-    }
-
     @Override
     protected Class<ResetApEffect> getResetStatEffectClass() {
         return ResetApEffect.class;
     }
 
     @Override
-    protected void reset(ResetApEffect reset, EntityId target) {
+    protected void reset(EntityData data, ResetApEffect reset, EntityId target) {
         BuffedActionPoints ap = data.get(target, BuffedActionPoints.class);
         if(ap != null) {
             data.set(target, new ActiveActionPoints(ap.getAp()));

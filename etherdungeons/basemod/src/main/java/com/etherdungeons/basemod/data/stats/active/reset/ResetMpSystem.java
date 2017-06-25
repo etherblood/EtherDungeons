@@ -8,17 +8,13 @@ import com.etherdungeons.entitysystem.EntityId;
 
 public class ResetMpSystem extends AbstractResetStatSystem<ResetMpEffect> {
 
-    public ResetMpSystem(EntityData data) {
-        super(data);
-    }
-
     @Override
     protected Class<ResetMpEffect> getResetStatEffectClass() {
         return ResetMpEffect.class;
     }
 
     @Override
-    protected void reset(ResetMpEffect reset, EntityId target) {
+    protected void reset(EntityData data, ResetMpEffect reset, EntityId target) {
         BuffedMovePoints ap = data.get(target, BuffedMovePoints.class);
         if(ap != null) {
             data.set(target, new ActiveMovePoints(ap.getMp()));

@@ -1,5 +1,6 @@
 package com.etherdungeons.basemod.data.gameflow.effects.turnflow;
 
+import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.data.gameflow.GameState;
 import com.etherdungeons.basemod.data.gameflow.effects.turnflow.phases.CurrentRound;
 import com.etherdungeons.basemod.data.gameflow.triggers.PostResolveTriggerRequest;
@@ -19,17 +20,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Philipp
  */
-public class StartGameSystem implements Runnable {
+public class StartGameSystem implements GameSystem {
 
     private final Logger log = LoggerFactory.getLogger(StartGameSystem.class);
-    private final EntityData data;
-
-    public StartGameSystem(EntityData data) {
-        this.data = data;
-    }
 
     @Override
-    public void run() {
+    public void run(EntityData data) {
         if (data.streamEntities(StartGameEffect.class, Triggered.class).findAny().isPresent()) {
             EntityId state = data.entity(GameState.class);
             data.set(state, new CurrentRound(0));

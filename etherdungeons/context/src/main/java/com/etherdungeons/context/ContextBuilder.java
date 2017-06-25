@@ -35,7 +35,13 @@ public class ContextBuilder {
         List<BeanDefinition> instantiationOrder = instantiationOrder();
         List<Object> beansList = Arrays.asList(beans);
         for (BeanDefinition def : instantiationOrder) {
-            beans[definitions.indexOf(def)] = def.construct(findParams(beansList, def.getDependencies()));
+            Object[] params;
+            try {
+                params = findParams(beansList, def.getDependencies());
+            } catch (Throwable t) {
+                throw new RuntimeException("failed to find params for " + def, t);
+            }
+            beans[definitions.indexOf(def)] = def.construct(params);
         }
 
         Context context = new Context(beansList);
@@ -88,7 +94,11 @@ public class ContextBuilder {
     }
 
     private Object findParam(List<Object> beans, BeanDependency dependency) {
-        return dependency.paramFromCandidates(beans.stream().filter(dependency.getDependencyType()::isInstance));
+        try {
+            return dependency.paramFromCandidates(beans.stream().filter(dependency.getDependencyType()::isInstance));
+        } catch(Throwable t) {
+            throw new IllegalStateException("failed to find " + dependency, t);
+        }
     }
 
     private void postConstruct(Object bean) {

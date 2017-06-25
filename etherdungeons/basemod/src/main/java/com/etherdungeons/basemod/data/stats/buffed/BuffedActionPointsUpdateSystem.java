@@ -2,17 +2,12 @@ package com.etherdungeons.basemod.data.stats.buffed;
 
 import com.etherdungeons.basemod.data.stats.additive.AdditiveActionPoints;
 import com.etherdungeons.basemod.data.stats.base.BaseActionPoints;
-import com.etherdungeons.entitysystem.EntityData;
 
 /**
  *
  * @author Philipp
  */
 public class BuffedActionPointsUpdateSystem extends AbstractBuffedStatUpdateSystem<BaseActionPoints, AdditiveActionPoints, BuffedActionPoints>{
-
-    public BuffedActionPointsUpdateSystem(EntityData data) {
-        super(data);
-    }
 
     @Override
     protected Class<BaseActionPoints> getBaseStatClass() {
