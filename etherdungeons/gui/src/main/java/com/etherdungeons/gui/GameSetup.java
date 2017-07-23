@@ -1,6 +1,7 @@
 package com.etherdungeons.gui;
 
-import com.etherdungeons.basemod.BaseMod;
+import com.etherdungeons.basemod.mods.BaseMod;
+import com.etherdungeons.basemod.mods.SimpleLoggerMod;
 import com.etherdungeons.context.Context;
 import com.etherdungeons.entitysystem.EntityData;
 import com.etherdungeons.entitysystem.EntityId;
@@ -26,7 +27,7 @@ public class GameSetup {
     }
 
     private static Context initGameThrows() throws ReflectiveOperationException, IOException {
-        Context gameContext = new ModCombiner(new BaseMod(), new GuiMod()).build();
+        Context gameContext = new ModCombiner(new BaseMod(), new GuiMod(), new SimpleLoggerMod()).build();
         TemplateService templates = gameContext.getBean(TemplateService.class);
         EntityData data = gameContext.getBean(EntityData.class);
 

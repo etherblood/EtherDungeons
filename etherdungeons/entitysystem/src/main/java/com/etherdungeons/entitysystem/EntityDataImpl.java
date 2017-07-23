@@ -102,4 +102,38 @@ public class EntityDataImpl implements EntityData, EntityDataReadonly {
     public EntityId createEntity() {
         return entityIdFactory.get();
     }
+
+    @Override
+    public String toString() {
+        Map<EntityId, Collection<String>> map = new HashMap<>();
+        for (Class<? extends EntityComponent> componentClass : registeredComponentClasses()) {
+            for (EntityId entity : entities(componentClass)) {
+                map.computeIfAbsent(entity, e -> new TreeSet<>()).add(get(entity, componentClass).toString());
+            }
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append("EntityDataImpl{");
+        builder.append(System.lineSeparator());
+        for (Map.Entry<EntityId, Collection<String>> entry : map.entrySet()) {
+            toString(entry.getKey(), entry.getValue(), builder);
+        }
+        builder.append('}');
+        return builder.toString();
+    }
+    
+    private void toString(EntityId entity, Collection<String> components, StringBuilder builder) {
+        builder.append('\t');
+        builder.append(entity);
+        builder.append(" {");
+        for (String component : components) {
+            builder.append(System.lineSeparator());
+            builder.append('\t');
+            builder.append('\t');
+            builder.append(component);
+        }
+        builder.append(System.lineSeparator());
+        builder.append('\t');
+        builder.append('}');
+        builder.append(System.lineSeparator());
+    }
 }

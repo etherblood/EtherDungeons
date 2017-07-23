@@ -17,6 +17,7 @@ import com.jme3.app.state.BaseAppState;
 import com.jme3.math.Vector3f;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
 
 /**
  *
@@ -33,7 +34,7 @@ public class ModelAppstate extends BaseAppState implements GameSystem {
     }
 
     @Override
-    public void run(EntityData data) {
+    public void run(EntityData data, Logger log) {
         for (EntityId triggerArgs : data.entities(Triggered.class)) {
             EntityId effect = data.get(triggerArgs, Triggered.class).getTrigger();
             MoveEffect move = data.get(effect, MoveEffect.class);

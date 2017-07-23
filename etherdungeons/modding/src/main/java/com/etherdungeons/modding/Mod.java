@@ -1,5 +1,6 @@
 package com.etherdungeons.modding;
 
+import com.etherdungeons.context.definitions.BeanDefinition;
 import java.util.Collection;
 
 /**
@@ -8,5 +9,6 @@ import java.util.Collection;
  */
 public interface Mod {
 
-    Collection<SystemDefinition> getSystemDefinitions();
+    Collection<BeanDefinition<?>> getBeanDefinitions();
+    Collection<OrderConstraint> getOrderConstraints();
 }

@@ -1,6 +1,6 @@
 package com.etherdungeons.engine.sandbox;
 
-import com.etherdungeons.basemod.BaseMod;
+import com.etherdungeons.basemod.mods.BaseMod;
 import com.etherdungeons.basemod.GameSystem;
 import com.etherdungeons.basemod.actions.Action;
 import com.etherdungeons.basemod.actions.ActionManager;
@@ -14,6 +14,7 @@ import com.etherdungeons.basemod.data.gameflow.effects.spiritclaw.SpiritClawEffe
 import com.etherdungeons.basemod.data.gameflow.effects.turnflow.EndTurnEffect;
 import com.etherdungeons.basemod.data.gameflow.triggers.TriggerRequest;
 import com.etherdungeons.basemod.data.position.Position;
+import com.etherdungeons.basemod.mods.SimpleLoggerMod;
 import com.etherdungeons.context.Context;
 import com.etherdungeons.entitysystem.EntityComponent;
 import com.etherdungeons.entitysystem.EntityData;
@@ -48,7 +49,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Logger log = LoggerFactory.getLogger(Main.class);
         
-        Context context = new ModCombiner(new BaseMod()).build();
+        Context context = new ModCombiner(new BaseMod(), new SimpleLoggerMod()).build();
         TemplateService templates = context.getBean(TemplateService.class);
         EntityData data = context.getBean(EntityData.class);
         
@@ -117,7 +118,7 @@ public class Main {
             copyState(data, entityDataImpl);
             for (GameSystem runnable : runnables) {
                 try {
-                    runnable.run(data);
+                    runnable.run(data, log);
                 } catch (Throwable t) {
                     log.info("{}", runnables);
                     logState(data, log);

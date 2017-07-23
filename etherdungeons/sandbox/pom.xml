@@ -12,7 +12,7 @@
     <dependencies>
         <dependency>
             <groupId>com.etherdungeons</groupId>
-            <artifactId>basemod</artifactId>
+            <artifactId>core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.etherdungeons</groupId>

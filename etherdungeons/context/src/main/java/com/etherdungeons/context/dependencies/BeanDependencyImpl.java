@@ -12,7 +12,7 @@ class BeanDependencyImpl implements BeanDependency {
     private final Class<?> dependencyType;
     private final Collector collector;
 
-    public BeanDependencyImpl(Class<?> type, Collector collector) {
+    public BeanDependencyImpl(Class<?> type, Collector<?, ?, ?> collector) {
         this.dependencyType = type;
         this.collector = collector;
     }

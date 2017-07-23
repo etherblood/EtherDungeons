@@ -6,12 +6,8 @@
 package com.etherdungeons.context.dependencies;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Stream;
 import org.junit.Test;
 import static org.junit.Assert.*;

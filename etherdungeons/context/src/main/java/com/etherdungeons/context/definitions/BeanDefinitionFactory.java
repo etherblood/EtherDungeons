@@ -12,13 +12,13 @@ import java.util.function.Supplier;
  * @author Philipp
  */
 public class BeanDefinitionFactory {
-
-    public static <T> BeanDefinition<T> of(Class<T> c) {
-        Constructor<?>[] constructors = c.getConstructors();
-        if (constructors.length != 1) {
-            throw new IllegalArgumentException(c.getName());
+    
+    public static <T> BeanDefinition<T> of(Class<T> clazz, Class<?>... constructorParams) {
+        try {
+            return of(clazz.getConstructor(constructorParams));
+        } catch (NoSuchMethodException | SecurityException ex) {
+            throw new RuntimeException(ex);
         }
-        return of((Constructor<T>) constructors[0]);
     }
 
     public static <T> BeanDefinition<T> of(Constructor<T> constructor) {
@@ -33,7 +33,7 @@ public class BeanDefinitionFactory {
         return of_(beanType, a -> supply.get());
     }
 
-    protected static <T> BeanDefinition<T> of(Class<T> beanType, Function<Object[], T> constructorFunction, Class... types) {
+    protected static <T> BeanDefinition<T> of(Class<T> beanType, Function<Object[], T> constructorFunction, Class<?>... types) {
         BeanDependency[] dependencies = new BeanDependency[types.length];
         for (int i = 0; i < dependencies.length; i++) {
             dependencies[i] = BeanDependencyFactory.of(types[i]);
@@ -41,7 +41,8 @@ public class BeanDefinitionFactory {
         return of_(beanType, constructorFunction, dependencies);
     }
 
+    @SuppressWarnings("unchecked")
     protected static <T> BeanDefinition<T> of_(Class<T> beanType, Function<Object[], T> constructorFunction, BeanDependency... dependencies) {
-        return new BeanDefinitionImpl(beanType, constructorFunction, dependencies);
+        return new BeanDefinitionImpl<>(beanType, constructorFunction, dependencies);
     }
 }

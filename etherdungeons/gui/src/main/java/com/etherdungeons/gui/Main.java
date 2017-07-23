@@ -18,6 +18,7 @@ public class Main extends SimpleApplication {
     
     public static void main(String[] args) {
         Context gameContext = new GameSetup().setup();
+        System.out.println(gameContext);
         Main app = new Main(gameContext);
         
         

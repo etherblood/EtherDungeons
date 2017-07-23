@@ -20,26 +20,26 @@ import javax.annotation.PostConstruct;
  */
 public class ContextBuilder {
 
-    private final List<BeanDefinition> definitions = new ArrayList<>();
+    private final List<BeanDefinition<?>> definitions = new ArrayList<>();
 
-    public void add(Constructor constructor) {
+    public void add(Constructor<?> constructor) {
         add(BeanDefinitionFactory.of(constructor));
     }
     
-    public void add(BeanDefinition def) {
+    public void add(BeanDefinition<?> def) {
         definitions.add(def);
     }
 
     public Context build() {
         Object[] beans = new Object[definitions.size()];
-        List<BeanDefinition> instantiationOrder = instantiationOrder();
+        List<BeanDefinition<?>> instantiationOrder = instantiationOrder();
         List<Object> beansList = Arrays.asList(beans);
-        for (BeanDefinition def : instantiationOrder) {
+        for (BeanDefinition<?> def : instantiationOrder) {
             Object[] params;
             try {
                 params = findParams(beansList, def.getDependencies());
-            } catch (Throwable t) {
-                throw new RuntimeException("failed to find params for " + def, t);
+            } catch (IllegalStateException ex) {
+                throw new IllegalStateException("failed to find params for " + def, ex);
             }
             beans[definitions.indexOf(def)] = def.construct(params);
         }
@@ -51,16 +51,16 @@ public class ContextBuilder {
         return context;
     }
 
-    protected List<BeanDefinition> instantiationOrder() {
-        List<BeanDefinition> result = new ArrayList<>(definitions.size());
-        List<BeanDefinition> open = new ArrayList<>(definitions);
+    protected List<BeanDefinition<?>> instantiationOrder() {
+        List<BeanDefinition<?>> result = new ArrayList<>(definitions.size());
+        List<BeanDefinition<?>> open = new ArrayList<>(definitions);
 
         boolean repeat;
         do {
             repeat = false;
-            Iterator<BeanDefinition> iterator = open.iterator();
+            Iterator<BeanDefinition<?>> iterator = open.iterator();
             while (iterator.hasNext()) {
-                BeanDefinition def = iterator.next();
+                BeanDefinition<?> def = iterator.next();
                 if (Stream.of(def.getDependencies()).noneMatch(d -> containsDependency(open, d))) {
                     result.add(def);
                     iterator.remove();
@@ -74,10 +74,10 @@ public class ContextBuilder {
         return result;
     }
 
-    private boolean containsDependency(List<BeanDefinition> list, BeanDependency dependency) {
+    private boolean containsDependency(List<BeanDefinition<?>> list, BeanDependency dependency) {
         Class<?> dependencyType = dependency.getDependencyType();
-        for (BeanDefinition def : list) {
-            Class beanType = def.getBeanType();
+        for (BeanDefinition<?> def : list) {
+            Class<?> beanType = def.getBeanType();
             if (dependencyType.isAssignableFrom(beanType)) {
                 return true;
             }

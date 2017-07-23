@@ -12,8 +12,8 @@
         <module>templates</module>
         <module>gui</module>
         <module>modding</module>
-        <module>basemod</module>
         <module>sandbox</module>
+        <module>core</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,7 +49,7 @@
             </dependency>
             <dependency>
                 <groupId>com.etherdungeons</groupId>
-                <artifactId>basemod</artifactId>
+                <artifactId>core</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
